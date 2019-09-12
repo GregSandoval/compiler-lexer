@@ -1,0 +1,23 @@
+package DFAGraph;
+
+import static DFAGraph.DFAState.FINAL_STATE;
+import static DFAGraph.DFAState.NON_FINAL_STATE;
+
+public enum DFANode {
+  ERROR(NON_FINAL_STATE),
+  START(NON_FINAL_STATE),
+  IDENTIFIER(FINAL_STATE),
+  INTEGER(FINAL_STATE),
+  FLOAT(FINAL_STATE),
+  OPENING_STRING(NON_FINAL_STATE),
+  STRING_CONTENTS(NON_FINAL_STATE),
+  CLOSING_STRING(FINAL_STATE),
+  WHITESPACE(NON_FINAL_STATE);
+
+  public final DFAState state;
+
+  DFANode(DFAState state) {
+    this.state = state;
+  }
+
+}
