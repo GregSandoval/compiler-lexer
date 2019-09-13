@@ -22,4 +22,5 @@ public final class DFATransitionPredicates {
   public static Predicate<Character> ANY = IS_LINE_SEPARATOR.negate();
   public static Predicate<Character> IS_LEFT_BRACKET = symbol -> symbol == '{';
   public static Predicate<Character> IS_COMMA = symbol -> symbol == ',';
+  public static Predicate<Character> IS_FORWARD_SLASH = symbol -> symbol == '/';
 }

@@ -10,7 +10,12 @@ public class LexerMain {
     var graph = new DFAGraph();
     buildGraph(graph);
 
-    final var text = "prog main { print( \"ASCII:\", \" A= \", 65, \" Z= \", 90 ); }\n";
+    final var text = " prog main { // Find the hypotenuse of a right triangle.\n" +
+      "      print( \"Input legs> \" );\n" +
+      "      var a = input( int );\n" +
+      "      var b = input( int );\n" +
+      "      print( \"Hypotenuse= \", ( a * a + b * b ) ^ 0.5 );\n" +
+      "    }";
 
     var current = START;
     var tokens = new ArrayList<String>();
@@ -32,7 +37,7 @@ public class LexerMain {
       }
 
 
-      if (current != START || !IS_WHITESPACE.test(letter)) {
+      if (current != START || (!IS_WHITESPACE.test(letter) && !IS_LINE_SEPARATOR.test(letter))) {
         currentToken.append(letter);
       }
     }
@@ -80,7 +85,12 @@ public class LexerMain {
     graph.addTransition(START, IS_LEFT_BRACKET, LEFT_BRACKET);
     graph.addTransition(LEFT_BRACKET, IS_WHITESPACE, START);
 
+    // COMMA
     graph.addTransition(START, IS_COMMA, COMMA);
     graph.addTransition(COMMA, IS_WHITESPACE, START);
+
+    // COMMENT
+    graph.addTransition(START, IS_FORWARD_SLASH, COMMENT);
+    graph.addTransition(COMMENT, ANY, COMMENT);
   }
 }
