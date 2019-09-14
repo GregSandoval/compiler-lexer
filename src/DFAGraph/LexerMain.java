@@ -16,7 +16,7 @@ public class LexerMain {
       "      var a = input( int );\n" +
       "      var b = input( int );\n" +
       "      print( \"Hypotenuse= \", ( a * a + b * b ) ^ 0.5 );\n" +
-      "    }";
+      "    }\n\n\t  \t \r \f \n  ";
 
     var CURRENT_STATE = START;
     var tokens = new ArrayList<String>();
@@ -24,20 +24,19 @@ public class LexerMain {
     System.out.println("Parsing: \n" + text + "\n");
 
     var cursor = new TextCursor(text);
-    var line = 1;
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
 
       if (CURRENT_STATE == COMMENT && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
-        System.out.println("Ignored comment: " + currentToken + "\n");
+        System.out.println("Ignored comment: " + escape(currentToken.toString()) + "\n");
         currentToken.setLength(0);
-        CURRENT_STATE = START;
         cursor.rewind();
+        CURRENT_STATE = START;
         continue;
       }
 
       if (CURRENT_STATE == WHITESPACE && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
-        System.out.println("Ignored whitespace\n");
+        System.out.println("Ignored whitespace: " + escape(currentToken.toString()) + "\n");
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START;
@@ -47,14 +46,13 @@ public class LexerMain {
       if (CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
         log(CURRENT_STATE, letter, GOTO);
         currentToken.append(letter);
-        var unknown = currentToken.toString().replace("\t", "\\t").replace("\n", "\\n");
-        System.out.println("Unknown token: " + unknown + "\n");
+        System.out.println("Unknown token: " + escape(currentToken.toString()) + "\n");
         currentToken.setLength(0);
         break;
       }
 
       if (CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
-        System.out.println("Accepted token: " + currentToken + "\nLine Number: " + line + "\n");
+        System.out.println("Accepted token: " + escape(currentToken.toString()) + "\n");
         tokens.add(currentToken.toString());
         currentToken.setLength(0);
         cursor.rewind();
@@ -63,48 +61,41 @@ public class LexerMain {
       }
 
       log(CURRENT_STATE, letter, GOTO);
-      if (CURRENT_STATE != START || GOTO != START) {
-        currentToken.append(letter);
-        if (letter == '\n')
-          line++;
-      }
 
+      currentToken.append(letter);
       CURRENT_STATE = GOTO;
 
       if (!cursor.hasNext() && CURRENT_STATE.IS_FINAL_STATE) {
-        System.out.println("Accepted token: " + currentToken + "\n");
+        System.out.println("Accepted token: " + escape(currentToken.toString()) + "\n");
         tokens.add(currentToken.toString());
+        currentToken.setLength(0);
+      }
+
+      if (!cursor.hasNext() && CURRENT_STATE.IS_NOT_FINAL_STATE) {
+        System.out.println("Ignored token: " + escape(currentToken.toString()) + "\n");
         currentToken.setLength(0);
       }
     }
 
-    System.out.printf("\nAccepted %s tokens: \n", tokens.size());
+    System.out.printf("Accepted %s tokens: \n", tokens.size());
     for (var i = 0; i < tokens.size(); i++) {
       System.out.printf("Token %d: ", i + 1);
-      System.out.println(tokens.get(i).replace("\t", "\\t").replace("\n", "\\n"));
+      System.out.println(escape(tokens.get(i)));
     }
   }
 
   public static void log(DFANode start, Character character, DFANode end) {
-    String letter;
+    System.out.printf("%-15s %-5s %-1s\n", start, "-(" + escape(String.valueOf(character)) + ")->", end);
+  }
 
-    switch (character) {
-      case '\t':
-        letter = "\\t";
-        break;
-      case '\n':
-        letter = "\\n";
-        break;
-      default:
-        letter = String.valueOf(character);
-    }
-    System.out.printf("%-15s %-5s %-1s\n", start, "-(" + letter + ")->", end);
+  public static String escape(String string) {
+    return string.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f");
   }
 
   public static void buildGraph() {
     // WHITESPACE STATE
     START
-      .ON(IS_WHITESPACE.or(NEWLINE))
+      .ON(IS_WHITESPACE.or(IS_LINE_SEPARATOR))
       .GOTO(WHITESPACE);
 
     WHITESPACE
