@@ -63,10 +63,12 @@ public enum DFANode {
   OP_SHIFT_RIGHT(FINAL_STATE);
 
   public final boolean IS_FINAL_STATE;
+  public final boolean IS_NOT_FINAL_STATE;
   private final List<Function<Character, DFANode>> transitions = new ArrayList<>();
 
   DFANode(boolean finalState) {
     this.IS_FINAL_STATE = finalState;
+    this.IS_NOT_FINAL_STATE = !finalState;
   }
 
   public PartialEdge ON(Predicate<Character> predicate) {
