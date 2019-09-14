@@ -3,7 +3,7 @@ package DFAGraph;
 import java.util.function.Predicate;
 
 public final class DFATransitionPredicates {
-  // Character Sets
+  // CHARACTER SETS
   public static Predicate<Character> LOWER_CASE_LETTER = symbol -> symbol >= 'a' && symbol <= 'z';
   public static Predicate<Character> UPPER_CASE_LETTER = symbol -> symbol >= 'A' && symbol <= 'Z';
   public static Predicate<Character> LETTER = LOWER_CASE_LETTER.or(UPPER_CASE_LETTER);
@@ -32,7 +32,6 @@ public final class DFATransitionPredicates {
   public static Predicate<Character> IS_LEFT_BRACKET = IS_CHARACTER('[');
   public static Predicate<Character> IS_RIGHT_BRACKET = IS_CHARACTER(']');
 
-
   public static Predicate<Character> IS_LEFT_PAREN = IS_CHARACTER('(');
   public static Predicate<Character> IS_RIGHT_PAREN = IS_CHARACTER(')');
 
@@ -48,6 +47,7 @@ public final class DFATransitionPredicates {
   public static Predicate<Character> IS_AND = IS_CHARACTER('&');
   public static Predicate<Character> IS_QUOTE = IS_CHARACTER('"');
   public static Predicate<Character> IS_UNDERSCORE = IS_CHARACTER('_');
+  public static Predicate<Character> IS_EXCLAMATION_MARK = IS_CHARACTER('!');
 
   // EVERYTHING EXCEPT LINE FEED
   public static Predicate<Character> ANY = IS_LINE_SEPARATOR.negate();

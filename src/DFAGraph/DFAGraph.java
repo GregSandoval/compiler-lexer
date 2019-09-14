@@ -27,11 +27,6 @@ public class DFAGraph {
 
   }
 
-  protected void transition(DFANode start, Function<Character, DFANode> transitionFunction) {
-    dfaMatrix.get(start).add(transitionFunction);
-  }
-
-
   protected DFAGraph transition(DFANode start, Predicate<Character> predicate, DFANode end) {
     dfaMatrix.get(start).add(character -> predicate.test(character) ? end : ERROR);
     return this;
