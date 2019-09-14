@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static DFAGraph.DFAState.FINAL_STATE;
-import static DFAGraph.DFAState.NON_FINAL_STATE;
+import static utils.Constants.FINAL_STATE;
+import static utils.Constants.NON_FINAL_STATE;
 
 public enum DFANode {
   // DFA Grammar
@@ -62,15 +62,24 @@ public enum DFANode {
   OP_SHIFT_LEFT(FINAL_STATE),
   OP_SHIFT_RIGHT(FINAL_STATE);
 
-  public final DFAState state;
+  public final boolean IS_FINAL_STATE;
   private final List<Function<Character, DFANode>> transitions = new ArrayList<>();
 
-  DFANode(DFAState state) {
-    this.state = state;
+  DFANode(boolean finalState) {
+    this.IS_FINAL_STATE = finalState;
   }
 
   public PartialEdge ON(Predicate<Character> predicate) {
     return end -> transitions.add(character -> predicate.test(character) ? end : ERROR);
+  }
+
+  public DFANode ON(Character character) {
+    return this.transitions
+      .stream()
+      .map(transitionFunc -> transitionFunc.apply(character))
+      .filter(state -> state != ERROR)
+      .findFirst()
+      .orElse(ERROR);
   }
 
   public interface PartialEdge {
