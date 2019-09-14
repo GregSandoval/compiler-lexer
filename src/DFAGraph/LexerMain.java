@@ -27,16 +27,8 @@ public class LexerMain {
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
 
-      if (CURRENT_STATE == COMMENT && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
+      if ((CURRENT_STATE == COMMENT || CURRENT_STATE == WHITESPACE) && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
         System.out.println("Ignored comment: " + escape(currentToken.toString()) + "\n");
-        currentToken.setLength(0);
-        cursor.rewind();
-        CURRENT_STATE = START;
-        continue;
-      }
-
-      if (CURRENT_STATE == WHITESPACE && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
-        System.out.println("Ignored whitespace: " + escape(currentToken.toString()) + "\n");
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START;
