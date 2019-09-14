@@ -41,7 +41,8 @@ public class LexerMain {
 
       if (current.state == NON_FINAL_STATE && next == ERROR) {
         currentToken.append(letter);
-        System.out.println("Unknown token: " + currentToken + "\n");
+        var unknown = currentToken.toString().replace("\t", "\\t").replace("\n", "\\n");
+        System.out.println("Unknown token: " + unknown + "\n");
         currentToken.setLength(0);
         break;
       }
@@ -59,6 +60,12 @@ public class LexerMain {
         currentToken.append(letter);
 
       current = next;
+
+      if (!cursor.hasNext() && current.state == FINAL_STATE) {
+        System.out.println("Accepted token: " + currentToken + "\n");
+        tokens.add(currentToken.toString());
+        currentToken.setLength(0);
+      }
     }
 
     System.out.printf("Accepted %s tokens: \n", tokens.size());
@@ -78,7 +85,7 @@ public class LexerMain {
   public static void buildGraph(DFAGraph graph) {
     graph.start()
       // START STATE
-      .transition(START, IS_WHITESPACE, START)
+      .transition(START, IS_WHITESPACE.or(NEWLINE), START)
 
       // IDENTIFIER
       .transition(START, LETTER.or(IS_UNDERSCORE), IDENTIFIER)
@@ -98,16 +105,49 @@ public class LexerMain {
       .transition(STRING_CONTENTS, ANY.and(IS_QUOTE.negate()), STRING_CONTENTS)
       .transition(STRING_CONTENTS, IS_QUOTE, CLOSING_STRING)
 
-      // PAREN
-      .transition(START, IS_LEFT_BRACE, LEFT_BRACE)
-
-      // COMMA
-      .transition(START, IS_COMMA, COMMA)
-
       // COMMENT
       .transition(START, IS_FORWARD_SLASH, COMMENT)
       .transition(COMMENT, ANY, COMMENT)
-      
+
+      // UNPAIRED DELIMITERS
+      .transition(START, IS_COMMA, COMMA)
+      .transition(START, IS_SEMI_COLON, SEMI_COLON)
+
+      // PAIRED DELIMITERS
+      .transition(START, IS_LESS_THAN, LESS_THAN)
+      .transition(START, IS_GREATER_THAN, GREATER_THAN)
+
+      .transition(START, IS_LEFT_BRACE, LEFT_BRACE)
+      .transition(START, IS_RIGHT_BRACE, RIGHT_BRACE)
+
+      .transition(START, IS_LEFT_BRACKET, LEFT_BRACKET)
+      .transition(START, IS_RIGHT_BRACKET, RIGHT_BRACKET)
+
+      .transition(START, IS_LEFT_PAREN, LEFT_PAREN)
+      .transition(START, IS_RIGHT_PAREN, RIGHT_PAREN)
+
+      // OTHER PUNCTUATION
+      .transition(START, IS_ASTERISK, ASTERISK)
+      .transition(START, IS_CARET, CARET)
+      .transition(START, IS_COLON, COLON)
+      .transition(START, IS_PERIOD, PERIOD)
+      .transition(START, IS_EQUAL, EQUAL)
+      .transition(START, IS_MINUS, MINUS)
+      .transition(START, IS_PLUS, PLUS)
+      .transition(START, IS_FORWARD_SLASH, FORWARD_SLASH)
+      .transition(START, IS_AND, AND)
+      .transition(START, IS_AND, AND)
+      .transition(START, IS_AND, AND)
+      .transition(START, IS_EXCLAMATION_MARK, EXCLAMATION_MARK)
+
+      // MULTI CHARACTER OPERATORS
+      .transition(MINUS, IS_GREATER_THAN, OP_ARROW)
+      .transition(EQUAL, IS_EQUAL, OP_EQUAL)
+      .transition(EXCLAMATION_MARK, IS_EQUAL, OP_NEGATE)
+      .transition(LESS_THAN, IS_EQUAL, OP_LESS_THAN)
+      .transition(GREATER_THAN, IS_EQUAL, OP_GREATER_THAN)
+      .transition(LESS_THAN, IS_LESS_THAN, OP_SHIFT_LEFT)
+      .transition(GREATER_THAN, IS_GREATER_THAN, OP_SHIFT_RIGHT)
 
       // END OF EDGES
       .end();
