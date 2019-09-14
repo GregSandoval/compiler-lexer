@@ -1,8 +1,13 @@
 package DFAGraph;
 
+import utils.TextCursor;
+
 import java.util.ArrayList;
 
 import static DFAGraph.DFANode.*;
+import static DFAGraph.DFANode.MINUS;
+import static DFAGraph.DFAState.FINAL_STATE;
+import static DFAGraph.DFAState.NON_FINAL_STATE;
 import static DFAGraph.DFATransitionPredicates.*;
 
 public class LexerMain {
@@ -21,26 +26,42 @@ public class LexerMain {
     var tokens = new ArrayList<String>();
     var currentToken = new StringBuilder();
     System.out.println("Parsing: " + text);
-    for (var letter : text.toCharArray()) {
-      final var next = graph.transition(current, letter);
-      log(current, letter, next);
-      current = next;
 
-      if (current == ERROR) {
+    var cursor = new TextCursor(text);
+    for (var letter : cursor) {
+      var next = graph.transition(current, letter);
+      log(current, letter, next);
+
+
+      if (current == COMMENT && current.state == NON_FINAL_STATE && next == ERROR) {
+        System.out.println("Ignored token: " + currentToken + "\n");
+        currentToken.setLength(0);
         current = START;
+        continue;
       }
 
-      if (current == START && currentToken.length() > 0) {
+      if (current.state == NON_FINAL_STATE && next == ERROR) {
+        currentToken.append(letter);
+        System.out.println("Unknown token: " + currentToken + "\n");
+        currentToken.setLength(0);
+        break;
+      }
+
+      if (current.state == FINAL_STATE && next == ERROR) {
         System.out.println("Accepted token: " + currentToken + "\n");
         tokens.add(currentToken.toString());
         currentToken.setLength(0);
+        cursor.rewind();
+        current = START;
+        continue;
       }
 
-
-      if (current != START || (!IS_WHITESPACE.test(letter) && !IS_LINE_SEPARATOR.test(letter))) {
+      if (current != START || next != START)
         currentToken.append(letter);
-      }
+
+      current = next;
     }
+
     System.out.printf("Accepted %s tokens: \n", tokens.size());
     for (var i = 0; i < tokens.size(); i++) {
       System.out.printf("Token %d: ", i + 1);
@@ -56,41 +77,36 @@ public class LexerMain {
   }
 
   public static void buildGraph(DFAGraph graph) {
-    // START
-    graph.addTransition(START, IS_WHITESPACE, START);
+    graph.transition()
+      // START
+      .transition(START, IS_WHITESPACE, START)
 
-    // IDENTIFIER
-    graph.addTransition(START, LETTER.or(UNDERSCORE), IDENTIFIER);
-    graph.addTransition(IDENTIFIER, UNDERSCORE.or(DIGIT).or(LETTER), IDENTIFIER);
-    graph.addTransition(IDENTIFIER, IS_WHITESPACE, START);
+      // IDENTIFIER
+      .transition(START, LETTER.or(IS_UNDERSCORE), IDENTIFIER)
+      .transition(IDENTIFIER, IS_UNDERSCORE.or(DIGIT).or(LETTER), IDENTIFIER)
 
-    // INTEGER
-    graph.addTransition(START, PLUS.or(MINUS).or(DIGIT), INTEGER);
-    graph.addTransition(INTEGER, DIGIT, INTEGER);
-    graph.addTransition(INTEGER, IS_WHITESPACE, START);
+      // INTEGER
+      .transition(START, IS_PLUS.or(IS_MINUS).or(DIGIT), INTEGER)
+      .transition(INTEGER, DIGIT, INTEGER)
 
-    // FLOAT
-    graph.addTransition(INTEGER, PERIOD, FLOAT);
-    graph.addTransition(FLOAT, DIGIT, FLOAT);
-    graph.addTransition(FLOAT, IS_WHITESPACE, START);
+      // FLOAT
+      .transition(INTEGER, IS_PERIOD, FLOAT)
+      .transition(FLOAT, DIGIT, FLOAT)
 
-    // STRING
-    graph.addTransition(START, QUOTE, OPENING_STRING);
-    graph.addTransition(OPENING_STRING, ANY.and(QUOTE.negate()), STRING_CONTENTS);
-    graph.addTransition(STRING_CONTENTS, ANY.and(QUOTE.negate()), STRING_CONTENTS);
-    graph.addTransition(STRING_CONTENTS, QUOTE, CLOSING_STRING);
-    graph.addTransition(CLOSING_STRING, IS_WHITESPACE, START);
+      // STRING
+      .transition(START, IS_QUOTE, OPENING_STRING)
+      .transition(OPENING_STRING, ANY.and(IS_QUOTE.negate()), STRING_CONTENTS)
+      .transition(STRING_CONTENTS, ANY.and(IS_QUOTE.negate()), STRING_CONTENTS)
+      .transition(STRING_CONTENTS, IS_QUOTE, CLOSING_STRING)
 
-    // PAREN
-    graph.addTransition(START, IS_LEFT_BRACKET, LEFT_BRACKET);
-    graph.addTransition(LEFT_BRACKET, IS_WHITESPACE, START);
+      // PAREN
+      .transition(START, IS_LEFT_BRACE, LEFT_BRACE)
 
-    // COMMA
-    graph.addTransition(START, IS_COMMA, COMMA);
-    graph.addTransition(COMMA, IS_WHITESPACE, START);
+      // COMMA
+      .transition(START, IS_COMMA, COMMA)
 
-    // COMMENT
-    graph.addTransition(START, IS_FORWARD_SLASH, COMMENT);
-    graph.addTransition(COMMENT, ANY, COMMENT);
+      // COMMENT
+      .transition(START, IS_FORWARD_SLASH, COMMENT)
+      .transition(COMMENT, ANY, COMMENT);
   }
 }
