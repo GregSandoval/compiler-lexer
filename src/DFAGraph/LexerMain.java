@@ -5,7 +5,6 @@ import utils.TextCursor;
 import java.util.ArrayList;
 
 import static DFAGraph.DFANode.*;
-import static DFAGraph.DFANode.MINUS;
 import static DFAGraph.DFAState.FINAL_STATE;
 import static DFAGraph.DFAState.NON_FINAL_STATE;
 import static DFAGraph.DFATransitionPredicates.*;
@@ -77,8 +76,8 @@ public class LexerMain {
   }
 
   public static void buildGraph(DFAGraph graph) {
-    graph.transition()
-      // START
+    graph.start()
+      // START STATE
       .transition(START, IS_WHITESPACE, START)
 
       // IDENTIFIER
@@ -107,6 +106,10 @@ public class LexerMain {
 
       // COMMENT
       .transition(START, IS_FORWARD_SLASH, COMMENT)
-      .transition(COMMENT, ANY, COMMENT);
+      .transition(COMMENT, ANY, COMMENT)
+      
+
+      // END OF EDGES
+      .end();
   }
 }

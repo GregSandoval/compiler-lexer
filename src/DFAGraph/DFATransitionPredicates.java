@@ -18,16 +18,36 @@ public final class DFATransitionPredicates {
   public static Predicate<Character> IS_LINE_SEPARATOR = NEWLINE.or(FORM_FEED).or(CARRIAGE_RETURN);
   public static Predicate<Character> IS_WHITESPACE = TAB.or(SPACE);
 
-  // TERMINALS
+  // UNPAIRED DELIMITERS
   public static Predicate<Character> IS_COMMA = IS_CHARACTER(',');
-  public static Predicate<Character> IS_UNDERSCORE = IS_CHARACTER('_');
-  public static Predicate<Character> IS_PLUS = IS_CHARACTER('+');
-  public static Predicate<Character> IS_MINUS = IS_CHARACTER('-');
-  public static Predicate<Character> IS_QUOTE = IS_CHARACTER('"');
-  public static Predicate<Character> IS_PERIOD = IS_CHARACTER('.');
-  public static Predicate<Character> IS_LEFT_BRACE = IS_CHARACTER('{');
-  public static Predicate<Character> IS_FORWARD_SLASH = IS_CHARACTER('/');
+  public static Predicate<Character> IS_SEMI_COLON = IS_CHARACTER(';');
 
+  // PAIRED DELIMITERS
+  public static Predicate<Character> IS_LESS_THAN = IS_CHARACTER('<');
+  public static Predicate<Character> IS_GREATER_THAN = IS_CHARACTER('>');
+
+  public static Predicate<Character> IS_LEFT_BRACE = IS_CHARACTER('{');
+  public static Predicate<Character> IS_RIGHT_BRACE = IS_CHARACTER('}');
+
+  public static Predicate<Character> IS_LEFT_BRACKET = IS_CHARACTER('[');
+  public static Predicate<Character> IS_RIGHT_BRACKET = IS_CHARACTER(']');
+
+
+  public static Predicate<Character> IS_LEFT_PAREN = IS_CHARACTER('(');
+  public static Predicate<Character> IS_RIGHT_PAREN = IS_CHARACTER(')');
+
+  // OTHER PUNCTUATION
+  public static Predicate<Character> IS_ASTERISK = IS_CHARACTER('*');
+  public static Predicate<Character> IS_CARET = IS_CHARACTER('^');
+  public static Predicate<Character> IS_COLON = IS_CHARACTER(':');
+  public static Predicate<Character> IS_PERIOD = IS_CHARACTER('.');
+  public static Predicate<Character> IS_EQUAL = IS_CHARACTER('=');
+  public static Predicate<Character> IS_MINUS = IS_CHARACTER('-');
+  public static Predicate<Character> IS_PLUS = IS_CHARACTER('+');
+  public static Predicate<Character> IS_FORWARD_SLASH = IS_CHARACTER('/');
+  public static Predicate<Character> IS_AND = IS_CHARACTER('&');
+  public static Predicate<Character> IS_QUOTE = IS_CHARACTER('"');
+  public static Predicate<Character> IS_UNDERSCORE = IS_CHARACTER('_');
 
   // EVERYTHING EXCEPT LINE FEED
   public static Predicate<Character> ANY = IS_LINE_SEPARATOR.negate();
