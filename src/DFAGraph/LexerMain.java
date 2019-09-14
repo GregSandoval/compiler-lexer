@@ -24,22 +24,30 @@ public class LexerMain {
     var current = START;
     var tokens = new ArrayList<String>();
     var currentToken = new StringBuilder();
-    System.out.println("Parsing: " + text);
+    System.out.println("Parsing: \n" + text + "\n");
 
     var cursor = new TextCursor(text);
     for (var letter : cursor) {
       var next = graph.transition(current, letter);
-      log(current, letter, next);
 
 
       if (current == COMMENT && current.state == NON_FINAL_STATE && next == ERROR) {
-        System.out.println("Ignored token: " + currentToken + "\n");
+        System.out.println("Ignored comment: " + currentToken + "\n");
         currentToken.setLength(0);
         current = START;
         continue;
       }
 
+      if (current == WHITESPACE && current.state == NON_FINAL_STATE && next == ERROR) {
+        System.out.println("Ignored whitespace\n");
+        currentToken.setLength(0);
+        cursor.rewind();
+        current = START;
+        continue;
+      }
+
       if (current.state == NON_FINAL_STATE && next == ERROR) {
+        log(current, letter, next);
         currentToken.append(letter);
         var unknown = currentToken.toString().replace("\t", "\\t").replace("\n", "\\n");
         System.out.println("Unknown token: " + unknown + "\n");
@@ -56,6 +64,7 @@ public class LexerMain {
         continue;
       }
 
+      log(current, letter, next);
       if (current != START || next != START)
         currentToken.append(letter);
 
@@ -84,8 +93,9 @@ public class LexerMain {
 
   public static void buildGraph(DFAGraph graph) {
     graph.start()
-      // START STATE
-      .transition(START, IS_WHITESPACE.or(NEWLINE), START)
+      // WHITESPACE STATE
+      .transition(START, IS_WHITESPACE.or(NEWLINE), WHITESPACE)
+      .transition(WHITESPACE, IS_WHITESPACE.or(NEWLINE), WHITESPACE)
 
       // IDENTIFIER
       .transition(START, LETTER.or(IS_UNDERSCORE), IDENTIFIER)
@@ -96,7 +106,8 @@ public class LexerMain {
       .transition(INTEGER, DIGIT, INTEGER)
 
       // FLOAT
-      .transition(INTEGER, IS_PERIOD, FLOAT)
+      .transition(INTEGER, IS_PERIOD, MAYBE_FLOAT)
+      .transition(MAYBE_FLOAT, DIGIT, FLOAT)
       .transition(FLOAT, DIGIT, FLOAT)
 
       // STRING
