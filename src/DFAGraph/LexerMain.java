@@ -5,13 +5,11 @@ import utils.TextCursor;
 import java.util.ArrayList;
 
 import static DFAGraph.DFANode.*;
-import static DFAGraph.DFAState.FINAL_STATE;
-import static DFAGraph.DFAState.NON_FINAL_STATE;
 import static DFAGraph.DFATransitionPredicates.*;
 
 public class LexerMain {
   public static void main(String[] args) {
-    var graph = new DFAGraph();
+    buildGraph();
 
     final var text = " prog main { // Find the hypotenuse of a right triangle.\n" +
       "      print( \"Input legs> \" );\n" +
@@ -20,7 +18,7 @@ public class LexerMain {
       "      print( \"Hypotenuse= \", ( a * a + b * b ) ^ 0.5 );\n" +
       "    }";
 
-    var current = START;
+    var CURRENT_STATE = START;
     var tokens = new ArrayList<String>();
     var currentToken = new StringBuilder();
     System.out.println("Parsing: \n" + text + "\n");
@@ -28,25 +26,26 @@ public class LexerMain {
     var cursor = new TextCursor(text);
     var line = 1;
     for (var letter : cursor) {
-      var next = graph.transition(current, letter);
+      var GOTO = CURRENT_STATE.ON(letter);
 
-      if (current == COMMENT && current.state == NON_FINAL_STATE && next == ERROR) {
+      if (CURRENT_STATE == COMMENT && !CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
         System.out.println("Ignored comment: " + currentToken + "\n");
         currentToken.setLength(0);
-        current = START;
+        CURRENT_STATE = START;
+        cursor.rewind();
         continue;
       }
 
-      if (current == WHITESPACE && current.state == NON_FINAL_STATE && next == ERROR) {
+      if (CURRENT_STATE == WHITESPACE && !CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
         System.out.println("Ignored whitespace\n");
         currentToken.setLength(0);
         cursor.rewind();
-        current = START;
+        CURRENT_STATE = START;
         continue;
       }
 
-      if (current.state == NON_FINAL_STATE && next == ERROR) {
-        log(current, letter, next);
+      if (!CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
+        log(CURRENT_STATE, letter, GOTO);
         currentToken.append(letter);
         var unknown = currentToken.toString().replace("\t", "\\t").replace("\n", "\\n");
         System.out.println("Unknown token: " + unknown + "\n");
@@ -54,25 +53,25 @@ public class LexerMain {
         break;
       }
 
-      if (current.state == FINAL_STATE && next == ERROR) {
+      if (CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
         System.out.println("Accepted token: " + currentToken + "\nLine Number: " + line + "\n");
         tokens.add(currentToken.toString());
         currentToken.setLength(0);
         cursor.rewind();
-        current = START;
+        CURRENT_STATE = START;
         continue;
       }
 
-      log(current, letter, next);
-      if (current != START || next != START) {
+      log(CURRENT_STATE, letter, GOTO);
+      if (CURRENT_STATE != START || GOTO != START) {
         currentToken.append(letter);
         if (letter == '\n')
           line++;
       }
 
-      current = next;
+      CURRENT_STATE = GOTO;
 
-      if (!cursor.hasNext() && current.state == FINAL_STATE) {
+      if (!cursor.hasNext() && CURRENT_STATE.IS_FINAL_STATE) {
         System.out.println("Accepted token: " + currentToken + "\n");
         tokens.add(currentToken.toString());
         currentToken.setLength(0);
@@ -87,9 +86,18 @@ public class LexerMain {
   }
 
   public static void log(DFANode start, Character character, DFANode end) {
-    var letter = (character == '\t') ? "\\t" : character;
-    letter = (character == '\n') ? "\\n" : character;
+    String letter;
 
+    switch (character) {
+      case '\t':
+        letter = "\\t";
+        break;
+      case '\n':
+        letter = "\\n";
+        break;
+      default:
+        letter = String.valueOf(character);
+    }
     System.out.printf("%-15s %-5s %-1s\n", start, "-(" + letter + ")->", end);
   }
 
