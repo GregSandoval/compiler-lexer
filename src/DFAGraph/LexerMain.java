@@ -27,9 +27,9 @@ public class LexerMain {
     System.out.println("Parsing: \n" + text + "\n");
 
     var cursor = new TextCursor(text);
+    var line = 1;
     for (var letter : cursor) {
       var next = graph.transition(current, letter);
-
 
       if (current == COMMENT && current.state == NON_FINAL_STATE && next == ERROR) {
         System.out.println("Ignored comment: " + currentToken + "\n");
@@ -56,7 +56,7 @@ public class LexerMain {
       }
 
       if (current.state == FINAL_STATE && next == ERROR) {
-        System.out.println("Accepted token: " + currentToken + "\n");
+        System.out.println("Accepted token: " + currentToken + "\nLine Number: " + line +  "\n");
         tokens.add(currentToken.toString());
         currentToken.setLength(0);
         cursor.rewind();
@@ -65,8 +65,11 @@ public class LexerMain {
       }
 
       log(current, letter, next);
-      if (current != START || next != START)
+      if (current != START || next != START){
         currentToken.append(letter);
+        if(letter == '\n')
+          line++;
+      }
 
       current = next;
 
