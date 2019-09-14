@@ -1,10 +1,14 @@
 package DFAGraph;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static DFAGraph.DFANode.*;
+import static DFAGraph.DFANode.ERROR;
+import static DFAGraph.DFANode.values;
 
 public class DFAGraph {
   private final Map<DFANode, List<Function<Character, DFANode>>> dfaMatrix = new EnumMap<>(DFANode.class);
@@ -15,8 +19,12 @@ public class DFAGraph {
     }
   }
 
-  protected DFAGraph transition() {
+  protected DFAGraph start() {
     return this;
+  }
+
+  protected void end() {
+
   }
 
   protected void transition(DFANode start, Function<Character, DFANode> transitionFunction) {
