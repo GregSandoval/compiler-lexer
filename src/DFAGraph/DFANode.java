@@ -1,5 +1,10 @@
 package DFAGraph;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import static DFAGraph.DFAState.FINAL_STATE;
 import static DFAGraph.DFAState.NON_FINAL_STATE;
 
@@ -58,9 +63,17 @@ public enum DFANode {
   OP_SHIFT_RIGHT(FINAL_STATE);
 
   public final DFAState state;
+  private final List<Function<Character, DFANode>> transitions = new ArrayList<>();
 
   DFANode(DFAState state) {
     this.state = state;
   }
 
+  public PartialEdge ON(Predicate<Character> predicate) {
+    return end -> transitions.add(character -> predicate.test(character) ? end : ERROR);
+  }
+
+  public interface PartialEdge {
+    void GOTO(DFANode end);
+  }
 }
