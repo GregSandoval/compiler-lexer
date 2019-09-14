@@ -28,7 +28,7 @@ public class LexerMain {
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
 
-      if (CURRENT_STATE == COMMENT && !CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
+      if (CURRENT_STATE == COMMENT && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
         System.out.println("Ignored comment: " + currentToken + "\n");
         currentToken.setLength(0);
         CURRENT_STATE = START;
@@ -36,7 +36,7 @@ public class LexerMain {
         continue;
       }
 
-      if (CURRENT_STATE == WHITESPACE && !CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
+      if (CURRENT_STATE == WHITESPACE && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
         System.out.println("Ignored whitespace\n");
         currentToken.setLength(0);
         cursor.rewind();
@@ -44,7 +44,7 @@ public class LexerMain {
         continue;
       }
 
-      if (!CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
+      if (CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
         log(CURRENT_STATE, letter, GOTO);
         currentToken.append(letter);
         var unknown = currentToken.toString().replace("\t", "\\t").replace("\n", "\\n");
@@ -78,7 +78,7 @@ public class LexerMain {
       }
     }
 
-    System.out.printf("Accepted %s tokens: \n", tokens.size());
+    System.out.printf("\nAccepted %s tokens: \n", tokens.size());
     for (var i = 0; i < tokens.size(); i++) {
       System.out.printf("Token %d: ", i + 1);
       System.out.println(tokens.get(i).replace("\t", "\\t").replace("\n", "\\n"));
