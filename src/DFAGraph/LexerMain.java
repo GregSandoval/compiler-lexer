@@ -56,7 +56,7 @@ public class LexerMain {
       }
 
       if (current.state == FINAL_STATE && next == ERROR) {
-        System.out.println("Accepted token: " + currentToken + "\nLine Number: " + line +  "\n");
+        System.out.println("Accepted token: " + currentToken + "\nLine Number: " + line + "\n");
         tokens.add(currentToken.toString());
         currentToken.setLength(0);
         cursor.rewind();
@@ -65,9 +65,9 @@ public class LexerMain {
       }
 
       log(current, letter, next);
-      if (current != START || next != START){
+      if (current != START || next != START) {
         currentToken.append(letter);
-        if(letter == '\n')
+        if (letter == '\n')
           line++;
       }
 
