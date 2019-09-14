@@ -9,18 +9,24 @@ import static DFAGraph.DFANode.*;
 public class DFAGraph {
   private final Map<DFANode, List<Function<Character, DFANode>>> dfaMatrix = new EnumMap<>(DFANode.class);
 
-  public DFAGraph() {
+  protected DFAGraph() {
     for (var node : values()) {
       dfaMatrix.put(node, new ArrayList<>());
     }
   }
 
-  public void addTransition(DFANode start, Function<Character, DFANode> transitionFunction) {
+  protected DFAGraph transition() {
+    return this;
+  }
+
+  protected void transition(DFANode start, Function<Character, DFANode> transitionFunction) {
     dfaMatrix.get(start).add(transitionFunction);
   }
 
-  public void addTransition(DFANode start, Predicate<Character> predicate, DFANode end) {
+
+  protected DFAGraph transition(DFANode start, Predicate<Character> predicate, DFANode end) {
     dfaMatrix.get(start).add(character -> predicate.test(character) ? end : ERROR);
+    return this;
   }
 
   public DFANode transition(DFANode start, Character character) {

@@ -3,24 +3,36 @@ package DFAGraph;
 import java.util.function.Predicate;
 
 public final class DFATransitionPredicates {
-  public static Predicate<Character> UNDERSCORE = symbol -> symbol == '_';
-  public static Predicate<Character> PLUS = symbol -> symbol == '+';
-  public static Predicate<Character> MINUS = symbol -> symbol == '-';
-  public static Predicate<Character> QUOTE = symbol -> symbol == '"';
-  public static Predicate<Character> PERIOD = symbol -> symbol == '.';
+  // Character Sets
   public static Predicate<Character> LOWER_CASE_LETTER = symbol -> symbol >= 'a' && symbol <= 'z';
   public static Predicate<Character> UPPER_CASE_LETTER = symbol -> symbol >= 'A' && symbol <= 'Z';
   public static Predicate<Character> LETTER = LOWER_CASE_LETTER.or(UPPER_CASE_LETTER);
   public static Predicate<Character> DIGIT = symbol -> symbol >= '0' && symbol <= '9';
-  public static Predicate<Character> TAB = symbol -> symbol == '\t';
-  public static Predicate<Character> NEWLINE = symbol -> symbol == '\n';
-  public static Predicate<Character> FORM_FEED = symbol -> symbol == '\f';
-  public static Predicate<Character> CARRIAGE_RETURN = symbol -> symbol == '\r';
-  public static Predicate<Character> SPACE = symbol -> symbol == ' ';
+
+  // WHITE SPACE AND NEWLINES
+  public static Predicate<Character> TAB = IS_CHARACTER('\t');
+  public static Predicate<Character> NEWLINE = IS_CHARACTER('\n');
+  public static Predicate<Character> FORM_FEED = IS_CHARACTER('\f');
+  public static Predicate<Character> CARRIAGE_RETURN = IS_CHARACTER('\r');
+  public static Predicate<Character> SPACE = IS_CHARACTER(' ');
   public static Predicate<Character> IS_LINE_SEPARATOR = NEWLINE.or(FORM_FEED).or(CARRIAGE_RETURN);
   public static Predicate<Character> IS_WHITESPACE = TAB.or(SPACE);
+
+  // TERMINALS
+  public static Predicate<Character> IS_COMMA = IS_CHARACTER(',');
+  public static Predicate<Character> IS_UNDERSCORE = IS_CHARACTER('_');
+  public static Predicate<Character> IS_PLUS = IS_CHARACTER('+');
+  public static Predicate<Character> IS_MINUS = IS_CHARACTER('-');
+  public static Predicate<Character> IS_QUOTE = IS_CHARACTER('"');
+  public static Predicate<Character> IS_PERIOD = IS_CHARACTER('.');
+  public static Predicate<Character> IS_LEFT_BRACE = IS_CHARACTER('{');
+  public static Predicate<Character> IS_FORWARD_SLASH = IS_CHARACTER('/');
+
+
+  // EVERYTHING EXCEPT LINE FEED
   public static Predicate<Character> ANY = IS_LINE_SEPARATOR.negate();
-  public static Predicate<Character> IS_LEFT_BRACKET = symbol -> symbol == '{';
-  public static Predicate<Character> IS_COMMA = symbol -> symbol == ',';
-  public static Predicate<Character> IS_FORWARD_SLASH = symbol -> symbol == '/';
+
+  private static Predicate<Character> IS_CHARACTER(Character character) {
+    return symbol -> symbol == character;
+  }
 }
