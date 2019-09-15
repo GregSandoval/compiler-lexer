@@ -11,15 +11,24 @@ import static DFAGraph.DFATransitionPredicates.*;
 
 public class LexerMain {
   public static void main(String[] args) {
-    buildGraph();
-
     final var text = " prog main { // Find the hypotenuse of a right triangle.\n" +
       "      print( \"Input legs> \" );\n" +
       "      var a = input( int );\n" +
       "      var b = input( int );\n" +
-      "      print( \"Hypotenuse= \", ( a * a + b * b ) ^ 0.5 );\n" +
+      "      print( \"Hypotenuse= \", ( a * a + b * b ) ^ -0.5 );\n" +
       "    }\n\n\t  \t \r \f \n  ";
 
+    final var terminals = process(text);
+
+    System.out.printf("Accepted %s tokens: \n", terminals.size());
+    for (var i = 0; i < terminals.size(); i++) {
+      System.out.printf("Graph.Token %d: ", i + 1);
+      System.out.println(terminals.get(i));
+    }
+  }
+
+  public static List<Terminal> process(String text) {
+    buildLexer();
     var CURRENT_STATE = START;
     List<Terminal> terminals = new ArrayList<Terminal>();
     var currentToken = new StringBuilder();
@@ -49,28 +58,14 @@ public class LexerMain {
       CURRENT_STATE = GOTO;
     }
 
-    terminals = terminals
+    return terminals
       .stream()
       .filter(terminal -> terminal.lexicon != WHITESPACE)
       .filter(terminal -> terminal.lexicon != COMMENT)
       .collect(Collectors.toList());
-
-    System.out.printf("Accepted %s tokens: \n", terminals.size());
-    for (var i = 0; i < terminals.size(); i++) {
-      System.out.printf("Token %d: ", i + 1);
-      System.out.println(terminals.get(i));
-    }
   }
 
-  public static void log(DFANode start, Character character, DFANode end) {
-    System.out.printf("%-15s %-5s %-1s\n", start, "-(" + escape(String.valueOf(character)) + ")->", end);
-  }
-
-  public static String escape(String string) {
-    return string.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f");
-  }
-
-  public static void buildGraph() {
+  public static void buildLexer() {
     // WHITESPACE STATE
     START
       .ON(IS_WHITESPACE.or(IS_LINE_SEPARATOR))
@@ -267,4 +262,13 @@ public class LexerMain {
       .ON(IS_GREATER_THAN)
       .GOTO(OP_SHIFT_RIGHT);
   }
+
+  public static void log(DFANode start, Character character, DFANode end) {
+    System.out.printf("%-15s %-5s %-1s\n", start, "-(" + escape(String.valueOf(character)) + ")->", end);
+  }
+
+  public static String escape(String string) {
+    return string.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f");
+  }
+
 }
