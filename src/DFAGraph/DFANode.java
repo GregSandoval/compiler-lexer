@@ -2,6 +2,7 @@ package DFAGraph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -12,8 +13,8 @@ public enum DFANode {
   // DFA Grammar
   FATAL_ERROR(NON_FINAL_STATE),
   END_OF_TERMINAL(NON_FINAL_STATE),
-  IGNORE_TERMINAL(NON_FINAL_STATE),
   NO_TRANSITION_FOUND(NON_FINAL_STATE),
+
   START(NON_FINAL_STATE),
   IDENTIFIER(FINAL_STATE),
   INTEGER(FINAL_STATE),
@@ -24,8 +25,8 @@ public enum DFANode {
   STRING_CONTENTS(NON_FINAL_STATE),
   CLOSING_STRING(FINAL_STATE),
 
-  WHITESPACE(NON_FINAL_STATE),
-  COMMENT(NON_FINAL_STATE),
+  WHITESPACE(FINAL_STATE),
+  COMMENT(FINAL_STATE),
 
   // Unpaired delimiters
   COMMA(FINAL_STATE),
@@ -66,39 +67,23 @@ public enum DFANode {
   OP_SHIFT_RIGHT(FINAL_STATE);
 
   public final boolean IS_FINAL_STATE;
-  public final boolean IS_NOT_FINAL_STATE;
   private final List<Function<Character, DFANode>> transitions = new ArrayList<>();
 
   DFANode(boolean finalState) {
     this.IS_FINAL_STATE = finalState;
-    this.IS_NOT_FINAL_STATE = !finalState;
   }
 
   public PartialEdge ON(Predicate<Character> predicate) {
-    return end -> transitions.add(character -> predicate.test(character) ? end : NO_TRANSITION_FOUND);
+    return end -> transitions.add(character -> predicate.test(character) ? end : null);
   }
 
   public DFANode ON(Character character) {
-    var GOTO = this.transitions
+    return this.transitions
       .stream()
       .map(transitionFunc -> transitionFunc.apply(character))
-      .filter(state -> state != NO_TRANSITION_FOUND)
+      .filter(Objects::nonNull)
       .findFirst()
-      .orElse(NO_TRANSITION_FOUND);
-
-    if (GOTO != NO_TRANSITION_FOUND) {
-      return GOTO;
-    }
-
-    if (IS_FINAL_STATE) {
-      return END_OF_TERMINAL;
-    }
-
-    if (this == COMMENT || this == WHITESPACE) {
-      return IGNORE_TERMINAL;
-    }
-
-    return FATAL_ERROR;
+      .orElse(IS_FINAL_STATE ? END_OF_TERMINAL : FATAL_ERROR);
   }
 
   public interface PartialEdge {
