@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class TextCursor implements Iterator<Character>, Iterable<Character> {
-  private int cursor = 0;
+  private int cursor = -1;
   private final char[] text;
 
   public TextCursor(@NotNull String text) {
@@ -15,7 +15,7 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
 
   @Override
   public boolean hasNext() {
-    return this.cursor + 1 < this.text.length;
+    return this.cursor+1 < this.text.length;
   }
 
   @Override
@@ -24,7 +24,7 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
       throw new NoSuchElementException();
     }
 
-    return text[cursor++];
+    return text[++cursor];
   }
 
   public void rewind() {

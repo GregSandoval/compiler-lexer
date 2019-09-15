@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import static DFAGraph.DFATransitionPredicates.*;
 import static Graph.DFAStates.*;
+import static Graph.Token.KeywordToken;
 
 public class LexerMain {
   public static void main(String[] args) {
@@ -23,6 +24,7 @@ public class LexerMain {
       "      print( \"Hypotenuse= \", ( a * a + b * b ) ^ -0.5 );\n" +
       "    }\n\n\t  \t \r \f \n  ";
 
+    System.out.println("Parsing: \n" + text + "\n");
     final var terminals = process(text);
 
     System.out.printf("Accepted %s tokens: \n", terminals.size());
@@ -35,16 +37,16 @@ public class LexerMain {
   public static List<Token> process(String text) {
     buildLexer();
     var CURRENT_STATE = START;
-    List<Token> tokens = new ArrayList<>();
+    var tokens = new ArrayList<Token>();
     var currentToken = new StringBuilder();
-    System.out.println("Parsing: \n" + text + "\n");
-
     var cursor = new TextCursor(text);
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
-      log(CURRENT_STATE, letter, GOTO);
 
-      if (GOTO == END_OF_TERMINAL && CURRENT_STATE instanceof FINAL_STATE) {
+      if (GOTO != END_OF_TERMINAL)
+        log(CURRENT_STATE, letter, GOTO);
+
+      if (CURRENT_STATE instanceof FINAL_STATE && GOTO == END_OF_TERMINAL) {
         tokens.add(((FINAL_STATE) CURRENT_STATE).buildToken(escape(currentToken.toString())));
         currentToken.setLength(0);
         cursor.rewind();
@@ -65,6 +67,7 @@ public class LexerMain {
       .stream()
       .filter(terminal -> !(terminal instanceof WhitespaceToken))
       .filter(terminal -> !(terminal instanceof CommentToken))
+      .map(KeywordToken::get)
       .collect(Collectors.toList());
   }
 
@@ -267,7 +270,7 @@ public class LexerMain {
   }
 
   public static void log(Node start, Character character, Node end) {
-    System.out.printf("%-15s %-5s %-1s\n", start, "-(" + escape(String.valueOf(character)) + ")->", end);
+    System.out.printf("%-15s %-10s %-5s\n", start, "-(" + escape(String.valueOf(character)) + ")->", end);
   }
 
   public static String escape(String string) {
