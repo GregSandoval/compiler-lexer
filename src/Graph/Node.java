@@ -6,8 +6,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static Graph.DFAStates.END_OF_TERMINAL;
-import static Graph.DFAStates.FATAL_ERROR;
+import static Graph.Node.NON_FINAL_STATE.END_OF_TERMINAL;
+import static Graph.Node.NON_FINAL_STATE.FATAL_ERROR;
 
 public class Node {
   private final List<Function<Character, Node>> transitions = new ArrayList<>();
@@ -54,15 +54,18 @@ public class Node {
     }
 
     public Token buildToken(String str) {
-      System.out.println("Accepted token: " + str + "\n");
       return instance != null ? instance : this.constructor.apply(str);
     }
   }
 
   public static final class NON_FINAL_STATE extends Node {
+    public static final Node FATAL_ERROR = new NON_FINAL_STATE("FATAL_ERROR");
+    public static final Node END_OF_TERMINAL = new NON_FINAL_STATE("END_OF_TERMINAL");
+
     public NON_FINAL_STATE(String name) {
       super(name);
     }
   }
+
 }
 
