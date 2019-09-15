@@ -27,7 +27,7 @@ public class LexerMain {
 
     System.out.printf("Accepted %s tokens: \n", terminals.size());
     for (var i = 0; i < terminals.size(); i++) {
-      System.out.printf("Graph.Token %d: ", i + 1);
+      System.out.printf("Token %d: ", i + 1);
       System.out.println(terminals.get(i));
     }
   }
@@ -42,17 +42,15 @@ public class LexerMain {
     var cursor = new TextCursor(text);
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
+      log(CURRENT_STATE, letter, GOTO);
 
       if (GOTO == END_OF_TERMINAL && CURRENT_STATE instanceof FINAL_STATE) {
-        var token = ((FINAL_STATE) CURRENT_STATE).buildToken(currentToken.toString());
-        tokens.add(token);
+        tokens.add(((FINAL_STATE) CURRENT_STATE).buildToken(escape(currentToken.toString())));
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START;
         continue;
       }
-
-      log(CURRENT_STATE, letter, GOTO);
 
       if (GOTO == FATAL_ERROR) {
         System.out.println("Unknown token: " + escape(currentToken.toString() + letter) + "\n");
@@ -141,7 +139,7 @@ public class LexerMain {
       .GOTO(CLOSING_STRING);
 
     // COMMENT
-    START
+    FORWARD_SLASH
       .ON(IS_FORWARD_SLASH)
       .GOTO(COMMENT);
 
