@@ -12,7 +12,7 @@ public abstract class Token {
 
   @Override
   public String toString() {
-    return "(Tok: <ID#> line <line, pos> str = \"" + this.str + "\")";
+    return "(Tok: <ID#> line= <line, pos> str = \"" + this.str + "\")";
   }
 
   public final static class SymbolToken extends Token {
@@ -132,7 +132,7 @@ public abstract class Token {
 
     @Override
     public String toString() {
-      return "(Tok: <ID#> line <line, pos> str = \"" + this.str + "\" flo= " + this.value + ")";
+      return "(Tok: <ID#> line= <line, pos> str = \"" + this.str + "\" flo= " + this.value + ")";
     }
   }
 
@@ -153,7 +153,7 @@ public abstract class Token {
     }
     @Override
     public String toString() {
-      return "(Tok: <ID#> line <line, pos> str = \"" + this.str + "\" int= " + this.value + ")";
+      return "(Tok: <ID#> line= <line, pos> str = \"" + this.str + "\" int= " + this.value + ")";
     }
   }
 }
