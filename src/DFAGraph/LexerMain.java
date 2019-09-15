@@ -3,6 +3,8 @@ package DFAGraph;
 import utils.TextCursor;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static DFAGraph.DFANode.*;
 import static DFAGraph.DFATransitionPredicates.*;
@@ -19,7 +21,7 @@ public class LexerMain {
       "    }\n\n\t  \t \r \f \n  ";
 
     var CURRENT_STATE = START;
-    var tokens = new ArrayList<String>();
+    List<Terminal> terminals = new ArrayList<Terminal>();
     var currentToken = new StringBuilder();
     System.out.println("Parsing: \n" + text + "\n");
 
@@ -28,16 +30,8 @@ public class LexerMain {
       var GOTO = CURRENT_STATE.ON(letter);
 
       if (GOTO == END_OF_TERMINAL) {
-        System.out.println("Accepted token: " + escape(currentToken.toString()) + "\n");
-        tokens.add(currentToken.toString());
-        currentToken.setLength(0);
-        cursor.rewind();
-        CURRENT_STATE = START;
-        continue;
-      }
-
-      if (GOTO == IGNORE_TERMINAL) {
-        System.out.println("Ignored token: " + escape(currentToken.toString()) + "\n");
+        var terminal = new Terminal(CURRENT_STATE, currentToken.toString());
+        terminals.add(terminal);
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START;
@@ -47,9 +41,7 @@ public class LexerMain {
       log(CURRENT_STATE, letter, GOTO);
 
       if (GOTO == FATAL_ERROR) {
-        currentToken.append(letter);
-        System.out.println("Unknown token: " + escape(currentToken.toString()) + "\n");
-        currentToken.setLength(0);
+        System.out.println("Unknown token: " + escape(currentToken.toString() + letter) + "\n");
         break;
       }
 
@@ -57,10 +49,16 @@ public class LexerMain {
       CURRENT_STATE = GOTO;
     }
 
-    System.out.printf("Accepted %s tokens: \n", tokens.size());
-    for (var i = 0; i < tokens.size(); i++) {
+    terminals = terminals
+      .stream()
+      .filter(terminal -> terminal.lexicon != WHITESPACE)
+      .filter(terminal -> terminal.lexicon != COMMENT)
+      .collect(Collectors.toList());
+
+    System.out.printf("Accepted %s tokens: \n", terminals.size());
+    for (var i = 0; i < terminals.size(); i++) {
       System.out.printf("Token %d: ", i + 1);
-      System.out.println(escape(tokens.get(i)));
+      System.out.println(terminals.get(i));
     }
   }
 
@@ -95,10 +93,18 @@ public class LexerMain {
 
     // INTEGER
     START
-      .ON(IS_PLUS.or(IS_MINUS).or(DIGIT))
+      .ON(DIGIT)
       .GOTO(INTEGER);
 
     INTEGER
+      .ON(DIGIT)
+      .GOTO(INTEGER);
+
+    PLUS
+      .ON(DIGIT)
+      .GOTO(INTEGER);
+
+    MINUS
       .ON(DIGIT)
       .GOTO(INTEGER);
 
