@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static DFAGraph.DFANode.ERROR;
+import static DFAGraph.DFANode.END_OF_TERMINAL;
 import static DFAGraph.DFANode.values;
 
 public class DFAGraph {
@@ -28,7 +28,7 @@ public class DFAGraph {
   }
 
   protected DFAGraph transition(DFANode start, Predicate<Character> predicate, DFANode end) {
-    dfaMatrix.get(start).add(character -> predicate.test(character) ? end : ERROR);
+    dfaMatrix.get(start).add(character -> predicate.test(character) ? end : END_OF_TERMINAL);
     return this;
   }
 
@@ -36,8 +36,8 @@ public class DFAGraph {
     return dfaMatrix.get(start)
       .stream()
       .map(transitionFunc -> transitionFunc.apply(character))
-      .filter(state -> state != ERROR)
+      .filter(state -> state != END_OF_TERMINAL)
       .findFirst()
-      .orElse(ERROR);
+      .orElse(END_OF_TERMINAL);
   }
 }

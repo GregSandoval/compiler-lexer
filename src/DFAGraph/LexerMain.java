@@ -27,25 +27,17 @@ public class LexerMain {
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
 
-      if ((CURRENT_STATE == COMMENT || CURRENT_STATE == WHITESPACE) && CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
-        System.out.println("Ignored comment: " + escape(currentToken.toString()) + "\n");
+      if (GOTO == END_OF_TERMINAL) {
+        System.out.println("Accepted token: " + escape(currentToken.toString()) + "\n");
+        tokens.add(currentToken.toString());
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START;
         continue;
       }
 
-      if (CURRENT_STATE.IS_NOT_FINAL_STATE && GOTO == ERROR) {
-        log(CURRENT_STATE, letter, GOTO);
-        currentToken.append(letter);
-        System.out.println("Unknown token: " + escape(currentToken.toString()) + "\n");
-        currentToken.setLength(0);
-        break;
-      }
-
-      if (CURRENT_STATE.IS_FINAL_STATE && GOTO == ERROR) {
-        System.out.println("Accepted token: " + escape(currentToken.toString()) + "\n");
-        tokens.add(currentToken.toString());
+      if (GOTO == IGNORE_TERMINAL) {
+        System.out.println("Ignored token: " + escape(currentToken.toString()) + "\n");
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START;
@@ -54,19 +46,15 @@ public class LexerMain {
 
       log(CURRENT_STATE, letter, GOTO);
 
+      if (GOTO == FATAL_ERROR) {
+        currentToken.append(letter);
+        System.out.println("Unknown token: " + escape(currentToken.toString()) + "\n");
+        currentToken.setLength(0);
+        break;
+      }
+
       currentToken.append(letter);
       CURRENT_STATE = GOTO;
-
-      if (!cursor.hasNext() && CURRENT_STATE.IS_FINAL_STATE) {
-        System.out.println("Accepted token: " + escape(currentToken.toString()) + "\n");
-        tokens.add(currentToken.toString());
-        currentToken.setLength(0);
-      }
-
-      if (!cursor.hasNext() && CURRENT_STATE.IS_NOT_FINAL_STATE) {
-        System.out.println("Ignored token: " + escape(currentToken.toString()) + "\n");
-        currentToken.setLength(0);
-      }
     }
 
     System.out.printf("Accepted %s tokens: \n", tokens.size());
@@ -272,6 +260,5 @@ public class LexerMain {
     GREATER_THAN
       .ON(IS_GREATER_THAN)
       .GOTO(OP_SHIFT_RIGHT);
-
   }
 }

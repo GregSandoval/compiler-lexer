@@ -10,7 +10,10 @@ import static utils.Constants.NON_FINAL_STATE;
 
 public enum DFANode {
   // DFA Grammar
-  ERROR(NON_FINAL_STATE),
+  FATAL_ERROR(NON_FINAL_STATE),
+  END_OF_TERMINAL(NON_FINAL_STATE),
+  IGNORE_TERMINAL(NON_FINAL_STATE),
+  NO_TRANSITION_FOUND(NON_FINAL_STATE),
   START(NON_FINAL_STATE),
   IDENTIFIER(FINAL_STATE),
   INTEGER(FINAL_STATE),
@@ -72,16 +75,30 @@ public enum DFANode {
   }
 
   public PartialEdge ON(Predicate<Character> predicate) {
-    return end -> transitions.add(character -> predicate.test(character) ? end : ERROR);
+    return end -> transitions.add(character -> predicate.test(character) ? end : NO_TRANSITION_FOUND);
   }
 
   public DFANode ON(Character character) {
-    return this.transitions
+    var GOTO = this.transitions
       .stream()
       .map(transitionFunc -> transitionFunc.apply(character))
-      .filter(state -> state != ERROR)
+      .filter(state -> state != NO_TRANSITION_FOUND)
       .findFirst()
-      .orElse(ERROR);
+      .orElse(NO_TRANSITION_FOUND);
+
+    if (GOTO != NO_TRANSITION_FOUND) {
+      return GOTO;
+    }
+
+    if (IS_FINAL_STATE) {
+      return END_OF_TERMINAL;
+    }
+
+    if (this == COMMENT || this == WHITESPACE) {
+      return IGNORE_TERMINAL;
+    }
+
+    return FATAL_ERROR;
   }
 
   public interface PartialEdge {
