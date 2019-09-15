@@ -1,13 +1,18 @@
 package DFAGraph;
 
+import Graph.Node;
+import Graph.Node.FINAL_STATE;
+import Graph.Token;
+import Graph.Token.CommentToken;
+import Graph.Token.WhitespaceToken;
 import utils.TextCursor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static DFAGraph.DFANode.*;
 import static DFAGraph.DFATransitionPredicates.*;
+import static Graph.DFAStates.*;
 
 public class LexerMain {
   public static void main(String[] args) {
@@ -27,10 +32,10 @@ public class LexerMain {
     }
   }
 
-  public static List<Terminal> process(String text) {
+  public static List<Token> process(String text) {
     buildLexer();
     var CURRENT_STATE = START;
-    List<Terminal> terminals = new ArrayList<Terminal>();
+    List<Token> tokens = new ArrayList<>();
     var currentToken = new StringBuilder();
     System.out.println("Parsing: \n" + text + "\n");
 
@@ -38,9 +43,9 @@ public class LexerMain {
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
 
-      if (GOTO == END_OF_TERMINAL) {
-        var terminal = new Terminal(CURRENT_STATE, currentToken.toString());
-        terminals.add(terminal);
+      if (GOTO == END_OF_TERMINAL && CURRENT_STATE instanceof FINAL_STATE) {
+        var token = ((FINAL_STATE) CURRENT_STATE).buildToken(currentToken.toString());
+        tokens.add(token);
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START;
@@ -58,10 +63,10 @@ public class LexerMain {
       CURRENT_STATE = GOTO;
     }
 
-    return terminals
+    return tokens
       .stream()
-      .filter(terminal -> terminal.lexicon != WHITESPACE)
-      .filter(terminal -> terminal.lexicon != COMMENT)
+      .filter(terminal -> !(terminal instanceof WhitespaceToken))
+      .filter(terminal -> !(terminal instanceof CommentToken))
       .collect(Collectors.toList());
   }
 
@@ -263,7 +268,7 @@ public class LexerMain {
       .GOTO(OP_SHIFT_RIGHT);
   }
 
-  public static void log(DFANode start, Character character, DFANode end) {
+  public static void log(Node start, Character character, Node end) {
     System.out.printf("%-15s %-5s %-1s\n", start, "-(" + escape(String.valueOf(character)) + ")->", end);
   }
 
