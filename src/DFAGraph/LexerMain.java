@@ -240,14 +240,6 @@ public class LexerMain {
       .GOTO(AND);
 
     START
-      .ON(IS_AND)
-      .GOTO(AND);
-
-    START
-      .ON(IS_AND)
-      .GOTO(AND);
-
-    START
       .ON(IS_EXCLAMATION_MARK)
       .GOTO(EXCLAMATION_MARK);
 
