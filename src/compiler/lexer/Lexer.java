@@ -58,9 +58,9 @@ public class Lexer {
 
     return tokens
       .stream()
-      .filter(terminal -> !(terminal instanceof Token.WhitespaceToken))
-      .filter(terminal -> !(terminal instanceof Token.CommentToken))
-      .map(Token.KeywordToken::get)
+      .filter(terminal -> !(terminal instanceof WhitespaceToken))
+      .filter(terminal -> !(terminal instanceof CommentToken))
+      .map(KeywordToken::get)
       .collect(Collectors.toList());
   }
 
