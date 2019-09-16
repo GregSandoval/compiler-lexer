@@ -1,4 +1,4 @@
-package compiler.lexer;
+package compiler.lexer.token;
 
 public abstract class TypedToken<Value> extends Token {
   public final Value value;

@@ -1,4 +1,4 @@
-package compiler.lexer;
+package compiler.lexer.token;
 
 public final class IDOffsetToken extends Token {
   public IDOffsetToken() {

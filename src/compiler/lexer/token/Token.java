@@ -1,4 +1,4 @@
-package compiler.lexer;
+package compiler.lexer.token;
 
 public abstract class Token {
   private static int UUID = 5;

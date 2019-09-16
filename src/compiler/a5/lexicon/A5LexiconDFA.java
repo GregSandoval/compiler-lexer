@@ -2,6 +2,7 @@ package compiler.a5.lexicon;
 
 import compiler.graph.Node;
 import compiler.lexer.*;
+import compiler.lexer.token.*;
 
 import static compiler.a5.lexicon.A5EdgePredicates.*;
 
