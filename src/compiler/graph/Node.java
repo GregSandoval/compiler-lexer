@@ -33,7 +33,7 @@ public class Node {
       .filter(Objects::nonNull)
       .findFirst()
       .or(onError)
-      .orElseThrow(() -> new RuntimeException("No transition found for " + this + " on character: " + character));
+      .orElseThrow(() -> new NoEdgeFound(this, character));
   }
 
   @Override

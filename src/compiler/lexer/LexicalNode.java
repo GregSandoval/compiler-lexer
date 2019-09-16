@@ -10,10 +10,10 @@ import static compiler.lexer.NonFinalState.FATAL_ERROR;
 public class LexicalNode extends Node {
 
   protected LexicalNode(String name) {
-    super(name, LexicalNode::onTransitionError);
+    super(name, LexicalNode::routeErrorToCustomStates);
   }
 
-  private static Optional<Node> onTransitionError(Node from) {
+  private static Optional<Node> routeErrorToCustomStates(Node from) {
     return Optional.of(from instanceof FinalState ? END_OF_TERMINAL : FATAL_ERROR);
   }
 }
