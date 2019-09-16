@@ -2,7 +2,7 @@ package compiler;
 
 import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.graph.Node;
-import compiler.lexer.Token;
+import compiler.lexer.token.Token;
 import compiler.lexer.LexerBuilder;
 
 

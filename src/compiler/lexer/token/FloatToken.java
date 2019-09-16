@@ -1,17 +1,17 @@
-package compiler.lexer;
+package compiler.lexer.token;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public final class FloatToken extends TypedToken<Float> {
-  private static Map<String, compiler.lexer.FloatToken> identityMap = new HashMap<>();
+  private static Map<String, FloatToken> identityMap = new HashMap<>();
 
   protected FloatToken(String str) {
     super(str, 4);
   }
 
-  public static compiler.lexer.FloatToken build(String string) {
-    return identityMap.computeIfAbsent(string, compiler.lexer.FloatToken::new);
+  public static FloatToken build(String string) {
+    return identityMap.computeIfAbsent(string, FloatToken::new);
   }
 
   @Override

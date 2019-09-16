@@ -1,6 +1,10 @@
 package compiler.lexer;
 
 import compiler.graph.Node;
+import compiler.lexer.token.CommentToken;
+import compiler.lexer.token.KeywordToken;
+import compiler.lexer.token.Token;
+import compiler.lexer.token.WhitespaceToken;
 import compiler.utils.TextCursor;
 import compiler.utils.TriConsumer;
 
