@@ -1,8 +1,8 @@
-package DFAGraph;
+package compiler.lexer;
 
-import Graph.Node;
-import Graph.Token;
-import utils.TriConsumer;
+import compiler.graph.Node;
+import compiler.graph.Token;
+import compiler.utils.TriConsumer;
 
 public class LexerBuilder {
   private TriConsumer<Node, Character, Node> onTransition = (i, j, k) -> {
@@ -12,6 +12,10 @@ public class LexerBuilder {
   };
 
   private Node startState;
+
+  public LexerBuilder() {
+
+  }
 
   public LexerBuilder onTransition(TriConsumer<Node, Character, Node> onTransition) {
     this.onTransition = this.onTransition.andThen(onTransition);

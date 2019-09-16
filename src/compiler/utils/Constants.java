@@ -1,4 +1,4 @@
-package utils;
+package compiler.utils;
 
 public class Constants {
   public static final boolean FINAL_STATE = true;

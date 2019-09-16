@@ -1,11 +1,13 @@
-package DFAGraph;
+package compiler;
 
-import Graph.Node;
-import Graph.Token;
+import compiler.graph.Node;
+import compiler.graph.Token;
+import compiler.lexer.Lexer;
+import compiler.lexer.LexerBuilder;
 
 import java.util.List;
 
-import static A5.Lexicon.A5LexiconDFA.START;
+import static compiler.a5.lexicon.A5LexiconDFA.START;
 
 
 public class LexerMain {
