@@ -9,25 +9,28 @@ import compiler.utils.TriConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
 import static compiler.lexer.NonFinalState.FATAL_ERROR;
-import static compiler.utils.StringUtils.escape;
 
 public class Lexer {
   private final TriConsumer<LexicalNode, Character, LexicalNode> transitionListeners;
   private final TriConsumer<LexicalNode, LexicalNode, Token> tokenCreatedListeners;
+  private final Consumer<String> unknownTokenListener;
   private final LexicalNode START_STATE;
 
   protected Lexer(
     LexicalNode startState,
     TriConsumer<LexicalNode, Character, LexicalNode> transitionListeners,
-    TriConsumer<LexicalNode, LexicalNode, Token> tokenCreatedListeners
+    TriConsumer<LexicalNode, LexicalNode, Token> tokenCreatedListeners,
+    Consumer<String> unknownTokenListener
   ) {
     this.transitionListeners = transitionListeners;
     this.tokenCreatedListeners = tokenCreatedListeners;
     this.START_STATE = startState;
+    this.unknownTokenListener = unknownTokenListener;
   }
 
   public List<Token> analyze(String text) {
@@ -51,7 +54,7 @@ public class Lexer {
       }
 
       if (GOTO == FATAL_ERROR) {
-        System.out.println("Unknown token: " + escape(currentToken.toString() + letter) + "\n");
+        unknownTokenListener.accept(currentToken.toString() + letter);
         break;
       }
 

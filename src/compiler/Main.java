@@ -22,6 +22,7 @@ public class Main {
     final var lexer = new LexerBuilder()
       .onTransition(Main::logTransition)
       .onTokenCreated(Main::logAcceptedToken)
+      .onUnknownTokenFound(Main::logUnknownToken)
       .setStartState(A5LexiconDFA.START)
       .createLexer();
 
@@ -29,6 +30,10 @@ public class Main {
 
     System.out.printf("\nAccepted %s tokens: \n", terminals.size());
     terminals.forEach(System.out::println);
+  }
+
+  private static void logUnknownToken(String unknownToken) {
+    System.out.println("Unknown token: '" + escape(unknownToken) + "'\n");
   }
 
   private static void logTransition(Node start, Character character, Node end) {
