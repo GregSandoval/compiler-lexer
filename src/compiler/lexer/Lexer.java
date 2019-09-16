@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
 import static compiler.lexer.NonFinalState.FATAL_ERROR;
+import static compiler.utils.StringUtils.escape;
 
 public class Lexer {
   private final TriConsumer<Node, Character, Node> onTransition;
@@ -66,9 +67,5 @@ public class Lexer {
       .filter(terminal -> !(terminal instanceof CommentToken))
       .map(KeywordToken::get)
       .collect(Collectors.toList());
-  }
-
-  private static String escape(String string) {
-    return string.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f");
   }
 }

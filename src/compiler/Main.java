@@ -5,6 +5,7 @@ import compiler.graph.Node;
 import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
 
+import static compiler.utils.StringUtils.escape;
 
 public class Main {
   private static final String text = " prog main { // Find the hypotenuse of a right triangle.\n" +
@@ -30,15 +31,10 @@ public class Main {
   }
 
   private static void logTransition(Node start, Character character, Node end) {
-    System.out.printf("%-15s %-10s %-5s\n", start, "-(" + escape(String.valueOf(character)) + ")->", end);
+    System.out.printf("%-15s = %-4s=> %-15s\n", start, "'" + escape(character) + "'", end);
   }
 
   private static void logAcceptedToken(Node start, Node end, Token token) {
-    System.out.println("Accepted token: " + token.str + "\n");
+    System.out.println("Accepted token value: \"" + token.str + "\"\n");
   }
-
-  private static String escape(String string) {
-    return string.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f");
-  }
-
 }

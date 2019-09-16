@@ -10,12 +10,12 @@ public class IdentifierToken extends TypedToken<String> {
     super(s, 2);
   }
 
+  public static IdentifierToken build(String string) {
+    return identityMap.computeIfAbsent(string, IdentifierToken::new);
+  }
+
   @Override
   protected String parse(String str) {
     return str;
-  }
-
-  public static IdentifierToken build(String string) {
-    return identityMap.computeIfAbsent(string, IdentifierToken::new);
   }
 }
