@@ -17,7 +17,11 @@ public class Lexer {
   private final TriConsumer<Node, Node, Token> onTokenCreated;
   private final Node START_STATE;
 
-  protected Lexer(Node startState, TriConsumer<Node, Character, Node> onTransition, TriConsumer<Node, Node, Token> onTokenCreated) {
+  protected Lexer(
+    Node startState,
+    TriConsumer<Node, Character, Node> onTransition,
+    TriConsumer<Node, Node, Token> onTokenCreated
+  ) {
     this.onTransition = onTransition;
     this.onTokenCreated = onTokenCreated;
     this.START_STATE = startState;
@@ -61,7 +65,7 @@ public class Lexer {
       .collect(Collectors.toList());
   }
 
-  public static String escape(String string) {
+  private static String escape(String string) {
     return string.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f");
   }
 }
