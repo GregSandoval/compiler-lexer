@@ -1,64 +1,65 @@
 package compiler.a5.lexicon;
 
-import compiler.graph.Node;
-import compiler.lexer.*;
+import compiler.lexer.FinalState;
+import compiler.lexer.LexicalNode;
+import compiler.lexer.NonFinalState;
 import compiler.lexer.token.*;
 
 import static compiler.a5.lexicon.A5EdgePredicates.*;
 
 public class A5LexiconDFA {
   // DFA Grammar
-  public static final Node START = new NonFinalState("START");
-  public static final Node IDENTIFIER = new FinalState("IDENTIFIER", IdentifierToken::build);
+  public static final LexicalNode START = new NonFinalState("START");
+  public static final LexicalNode IDENTIFIER = new FinalState("IDENTIFIER", IdentifierToken::build);
 
-  public static final Node INTEGER = new FinalState("INTEGER", IntegerToken::build);
-  public static final Node MAYBE_FLOAT = new NonFinalState("MAYBE_FLOAT");
-  public static final Node FLOAT = new FinalState("FLOAT", FloatToken::build);
+  public static final LexicalNode INTEGER = new FinalState("INTEGER", IntegerToken::build);
+  public static final LexicalNode MAYBE_FLOAT = new NonFinalState("MAYBE_FLOAT");
+  public static final LexicalNode FLOAT = new FinalState("FLOAT", FloatToken::build);
 
-  public static final Node OPENING_STRING = new NonFinalState("OPENING_STRING");
-  public static final Node STRING_CONTENTS = new NonFinalState("STRING_CONTENTS");
-  public static final Node CLOSING_STRING = new FinalState("CLOSING_STRING", StringToken::build);
+  public static final LexicalNode OPENING_STRING = new NonFinalState("OPENING_STRING");
+  public static final LexicalNode STRING_CONTENTS = new NonFinalState("STRING_CONTENTS");
+  public static final LexicalNode CLOSING_STRING = new FinalState("CLOSING_STRING", StringToken::build);
 
-  public static final Node WHITESPACE = new FinalState("WHITESPACE", WhitespaceToken::new);
-  public static final Node COMMENT = new FinalState("COMMENT", CommentToken::new);
+  public static final LexicalNode WHITESPACE = new FinalState("WHITESPACE", WhitespaceToken::new);
+  public static final LexicalNode COMMENT = new FinalState("COMMENT", CommentToken::new);
 
   // Unpaired delimiters
-  public static final Node COMMA = new FinalState("COMMA", A5Tokens.COMMA);
-  public static final Node SEMI_COLON = new FinalState("SEMI_COLON", A5Tokens.SEMI_COLON);
+  public static final LexicalNode COMMA = new FinalState("COMMA", A5Tokens.COMMA);
+  public static final LexicalNode SEMI_COLON = new FinalState("SEMI_COLON", A5Tokens.SEMI_COLON);
 
   // Paired delimiters
-  public static final Node LESS_THAN = new FinalState("LESS_THAN", A5Tokens.LESS_THAN);
-  public static final Node GREATER_THAN = new FinalState("GREATER_THAN", A5Tokens.GREATER_THAN);
+  public static final LexicalNode LESS_THAN = new FinalState("LESS_THAN", A5Tokens.LESS_THAN);
+  public static final LexicalNode GREATER_THAN = new FinalState("GREATER_THAN", A5Tokens.GREATER_THAN);
 
-  public static final Node LEFT_BRACE = new FinalState("LEFT_BRACE", A5Tokens.LEFT_BRACE);
-  public static final Node RIGHT_BRACE = new FinalState("RIGHT_BRACE", A5Tokens.RIGHT_BRACE);
+  public static final LexicalNode LEFT_BRACE = new FinalState("LEFT_BRACE", A5Tokens.LEFT_BRACE);
+  public static final LexicalNode RIGHT_BRACE = new FinalState("RIGHT_BRACE", A5Tokens.RIGHT_BRACE);
 
-  public static final Node LEFT_BRACKET = new FinalState("LEFT_BRACKET", A5Tokens.LEFT_BRACKET);
-  public static final Node RIGHT_BRACKET = new FinalState("RIGHT_BRACKET", A5Tokens.RIGHT_BRACKET);
+  public static final LexicalNode LEFT_BRACKET = new FinalState("LEFT_BRACKET", A5Tokens.LEFT_BRACKET);
+  public static final LexicalNode RIGHT_BRACKET = new FinalState("RIGHT_BRACKET", A5Tokens.RIGHT_BRACKET);
 
-  public static final Node LEFT_PAREN = new FinalState("LEFT_PAREN", A5Tokens.LEFT_PAREN);
-  public static final Node RIGHT_PAREN = new FinalState("RIGHT_PAREN", A5Tokens.RIGHT_PAREN);
+  public static final LexicalNode LEFT_PAREN = new FinalState("LEFT_PAREN", A5Tokens.LEFT_PAREN);
+  public static final LexicalNode RIGHT_PAREN = new FinalState("RIGHT_PAREN", A5Tokens.RIGHT_PAREN);
 
   // Other punctuation tokens
-  public static final Node ASTERISK = new FinalState("ASTERISK", A5Tokens.ASTERISK);
-  public static final Node CARET = new FinalState("CARET", A5Tokens.CARET);
-  public static final Node COLON = new FinalState("COLON", A5Tokens.COLON);
-  public static final Node PERIOD = new FinalState("PERIOD", A5Tokens.PERIOD);
-  public static final Node EQUAL = new FinalState("EQUAL", A5Tokens.EQUAL);
-  public static final Node MINUS = new FinalState("MINUS", A5Tokens.MINUS);
-  public static final Node PLUS = new FinalState("PLUS", A5Tokens.PLUS);
-  public static final Node FORWARD_SLASH = new FinalState("FORWARD_SLASH", A5Tokens.FORWARD_SLASH);
-  public static final Node AND = new FinalState("AND", A5Tokens.AND);
-  public static final Node EXCLAMATION_MARK = new FinalState("EXCLAMATION_MARK", A5Tokens.EXCLAMATION_MARK);
+  public static final LexicalNode ASTERISK = new FinalState("ASTERISK", A5Tokens.ASTERISK);
+  public static final LexicalNode CARET = new FinalState("CARET", A5Tokens.CARET);
+  public static final LexicalNode COLON = new FinalState("COLON", A5Tokens.COLON);
+  public static final LexicalNode PERIOD = new FinalState("PERIOD", A5Tokens.PERIOD);
+  public static final LexicalNode EQUAL = new FinalState("EQUAL", A5Tokens.EQUAL);
+  public static final LexicalNode MINUS = new FinalState("MINUS", A5Tokens.MINUS);
+  public static final LexicalNode PLUS = new FinalState("PLUS", A5Tokens.PLUS);
+  public static final LexicalNode FORWARD_SLASH = new FinalState("FORWARD_SLASH", A5Tokens.FORWARD_SLASH);
+  public static final LexicalNode AND = new FinalState("AND", A5Tokens.AND);
+  public static final LexicalNode EXCLAMATION_MARK = new FinalState("EXCLAMATION_MARK", A5Tokens.EXCLAMATION_MARK);
 
   // Multi character operators
-  public static final Node OP_ARROW = new FinalState("OP_ARROW", A5Tokens.OP_ARROW);
-  public static final Node OP_EQUAL = new FinalState("OP_EQUAL", A5Tokens.OP_EQUAL);
-  public static final Node OP_NEGATE = new FinalState("OP_NEGATE", A5Tokens.OP_NEGATE);
-  public static final Node OP_LESS_THAN = new FinalState("OP_LESS_THAN", A5Tokens.OP_LESS_THAN);
-  public static final Node OP_GREATER_THAN = new FinalState("OP_GREATER_THAN", A5Tokens.OP_GREATER_THAN);
-  public static final Node OP_SHIFT_LEFT = new FinalState("OP_SHIFT_LEFT", A5Tokens.OP_SHIFT_LEFT);
-  public static final Node OP_SHIFT_RIGHT = new FinalState("OP_SHIFT_RIGHT", A5Tokens.OP_SHIFT_RIGHT);
+  public static final LexicalNode OP_ARROW = new FinalState("OP_ARROW", A5Tokens.OP_ARROW);
+  public static final LexicalNode OP_EQUAL = new FinalState("OP_EQUAL", A5Tokens.OP_EQUAL);
+  public static final LexicalNode OP_NEGATE = new FinalState("OP_NEGATE", A5Tokens.OP_NEGATE);
+  public static final LexicalNode OP_LESS_THAN = new FinalState("OP_LESS_THAN", A5Tokens.OP_LESS_THAN);
+  public static final LexicalNode OP_GREATER_THAN = new FinalState("OP_GREATER_THAN", A5Tokens.OP_GREATER_THAN);
+  public static final LexicalNode OP_SHIFT_LEFT = new FinalState("OP_SHIFT_LEFT", A5Tokens.OP_SHIFT_LEFT);
+  public static final LexicalNode OP_SHIFT_RIGHT = new FinalState("OP_SHIFT_RIGHT", A5Tokens.OP_SHIFT_RIGHT);
 
   static {
     // WHITESPACE STATE

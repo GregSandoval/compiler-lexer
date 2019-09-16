@@ -15,7 +15,7 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
 
   @Override
   public boolean hasNext() {
-    return this.cursor+1 < this.text.length;
+    return this.cursor + 1 < this.text.length;
   }
 
   @Override
