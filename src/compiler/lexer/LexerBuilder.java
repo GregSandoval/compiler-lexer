@@ -27,13 +27,13 @@ public class LexerBuilder {
     return this;
   }
 
-  public LexerBuildReady setStartState(Node startState) {
+  public LexerBuilderReady setStartState(Node startState) {
     this.startState = startState;
-    return new LexerBuildReady();
+    return new LexerBuilderReady();
   }
 
-  public final class LexerBuildReady {
-    private LexerBuildReady() {
+  public final class LexerBuilderReady {
+    private LexerBuilderReady() {
 
     }
 
@@ -41,12 +41,14 @@ public class LexerBuilder {
       return new Lexer(startState, onTransition, onTokenCreated);
     }
 
-    public LexerBuilder onTransition(TriConsumer<Node, Character, Node> onTransition) {
-      return LexerBuilder.this.onTransition(onTransition);
+    public LexerBuilderReady onTransition(TriConsumer<Node, Character, Node> onTransition) {
+      LexerBuilder.this.onTransition(onTransition);
+      return this;
     }
 
-    public LexerBuilder onTokenCreated(TriConsumer<Node, Node, Token> onTokenCreated) {
-      return LexerBuilder.this.onTokenCreated(onTokenCreated);
+    public LexerBuilderReady onTokenCreated(TriConsumer<Node, Node, Token> onTokenCreated) {
+      LexerBuilder.this.onTokenCreated(onTokenCreated);
+      return this;
     }
   }
 }
