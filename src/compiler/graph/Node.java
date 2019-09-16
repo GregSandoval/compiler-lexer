@@ -1,23 +1,25 @@
 package compiler.graph;
 
-
-import compiler.lexer.FinalState;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-
-import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
-import static compiler.lexer.NonFinalState.FATAL_ERROR;
+import java.util.function.Supplier;
 
 public class Node {
+  private final Supplier<Optional<Node>> onError;
   private final List<Function<Character, Node>> transitions = new ArrayList<>();
   private final String name;
 
   protected Node(String name) {
+    this(name, ignored -> Optional.empty());
+  }
+
+  protected Node(String name, Function<Node, Optional<Node>> onError) {
     this.name = name;
+    this.onError = () -> onError.apply(this);
   }
 
   public PartialEdge ON(Predicate<Character> predicate) {
@@ -30,7 +32,8 @@ public class Node {
       .map(transitionFunc -> transitionFunc.apply(character))
       .filter(Objects::nonNull)
       .findFirst()
-      .orElse(this instanceof FinalState ? END_OF_TERMINAL : FATAL_ERROR);
+      .or(onError)
+      .orElseThrow(() -> new RuntimeException("No transition found for " + this + " on character: " + character));
   }
 
   @Override
