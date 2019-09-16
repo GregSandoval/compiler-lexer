@@ -10,7 +10,7 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
   private int cursor = -1;
 
   public TextCursor(@NotNull String text) {
-    this.text = (text + "\n\n").toCharArray();
+    this.text = (text + " ").toCharArray();
   }
 
   @Override
