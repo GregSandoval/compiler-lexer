@@ -1,7 +1,6 @@
 package compiler.lexer;
 
 import compiler.graph.Node;
-import compiler.graph.Token;
 import compiler.utils.TriConsumer;
 
 public class LexerBuilder {
