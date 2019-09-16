@@ -32,10 +32,6 @@ public class Main {
     terminals.forEach(System.out::println);
   }
 
-  private static void logUnknownToken(String unknownToken) {
-    System.out.println("Unknown token: '" + escape(unknownToken) + "'\n");
-  }
-
   private static void logTransition(Node start, Character character, Node end) {
     if (end != END_OF_TERMINAL)
       System.out.printf("%-15s = %-4s=> %-15s\n", start, "'" + escape(character) + "'", end);
@@ -43,5 +39,9 @@ public class Main {
 
   private static void logAcceptedToken(Node start, Node end, Token token) {
     System.out.println("Accepted token value: \"" + escape(token.str) + "\"\n");
+  }
+
+  private static void logUnknownToken(String unknownToken) {
+    System.out.println("Unknown token: '" + escape(unknownToken) + "'\n");
   }
 }
