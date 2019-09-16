@@ -43,7 +43,7 @@ public class Lexer {
         onTransition.accept(CURRENT_STATE, letter, GOTO);
 
       if (CURRENT_STATE instanceof FinalState && GOTO == END_OF_TERMINAL) {
-        var token = ((FinalState) CURRENT_STATE).buildToken(escape(currentToken.toString()));
+        var token = ((FinalState) CURRENT_STATE).buildToken(currentToken.toString());
         tokens.add(token);
         onTokenCreated.accept(CURRENT_STATE, GOTO, token);
         currentToken.setLength(0);
