@@ -6,7 +6,7 @@ import compiler.graph.Token;
 import compiler.lexer.LexerBuilder;
 
 
-public class LexerMain {
+public class Main {
   private static final String text = " prog main { // Find the hypotenuse of a right triangle.\n" +
     "      print( \"Input legs> \" );\n" +
     "      var a = input( int );\n" +
@@ -18,8 +18,8 @@ public class LexerMain {
     System.out.println("Parsing text: \n" + text + "\n");
 
     final var lexer = new LexerBuilder()
-      .onTransition(LexerMain::logTransition)
-      .onTokenCreated(LexerMain::logAcceptedToken)
+      .onTransition(Main::logTransition)
+      .onTokenCreated(Main::logAcceptedToken)
       .setStartState(A5LexiconDFA.START)
       .createLexer();
 
