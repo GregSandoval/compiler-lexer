@@ -18,7 +18,7 @@ public class FinalState extends LexicalNode {
     this.instance = instance;
   }
 
-  public Token buildToken(String str) {
+  public Token getToken(String str) {
     return instance != null ? instance : this.constructor.apply(str);
   }
 }

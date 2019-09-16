@@ -5,6 +5,7 @@ import compiler.graph.Node;
 import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
 
+import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
 import static compiler.utils.StringUtils.escape;
 
 public class Main {
@@ -13,7 +14,7 @@ public class Main {
     "      var a = input( int );\n" +
     "      var b = input( int );\n" +
     "      print( \"Hypotenuse= \", ( a * a + b * b ) ^ -0.5 );\n" +
-    "    }\n\n\t  \t \r \f \n  ";
+    "    }";
 
   public static void main(String[] args) {
     System.out.println("Parsing text: \n" + text + "\n");
@@ -31,7 +32,8 @@ public class Main {
   }
 
   private static void logTransition(Node start, Character character, Node end) {
-    System.out.printf("%-15s = %-4s=> %-15s\n", start, "'" + escape(character) + "'", end);
+    if (end != END_OF_TERMINAL)
+      System.out.printf("%-15s = %-4s=> %-15s\n", start, "'" + escape(character) + "'", end);
   }
 
   private static void logAcceptedToken(Node start, Node end, Token token) {

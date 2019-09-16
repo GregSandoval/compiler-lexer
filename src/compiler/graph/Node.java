@@ -8,25 +8,25 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-public class Node {
-  private final Supplier<Optional<Node>> onError;
-  private final List<Function<Character, Node>> transitions = new ArrayList<>();
+public abstract class Node<T extends Node<T>> {
+  private final Supplier<Optional<T>> onError;
+  private final List<Function<Character, T>> transitions = new ArrayList<>();
   private final String name;
 
   protected Node(String name) {
     this(name, ignored -> Optional.empty());
   }
 
-  protected Node(String name, Function<Node, Optional<Node>> onError) {
+  protected Node(String name, Function<T, Optional<T>> onError) {
     this.name = name;
-    this.onError = () -> onError.apply(this);
+    this.onError = () -> onError.apply(me());
   }
 
-  public PartialEdge ON(Predicate<Character> predicate) {
+  public PartialEdge<T> ON(Predicate<Character> predicate) {
     return end -> transitions.add(character -> predicate.test(character) ? end : null);
   }
 
-  public Node ON(Character character) {
+  public T ON(Character character) {
     return this.transitions
       .stream()
       .map(transitionFunc -> transitionFunc.apply(character))
@@ -41,8 +41,10 @@ public class Node {
     return name;
   }
 
-  public interface PartialEdge {
-    void GOTO(Node end);
+  public interface PartialEdge<T> {
+    void GOTO(T end);
   }
+
+  protected abstract T me();
 }
 

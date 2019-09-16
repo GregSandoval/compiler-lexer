@@ -1,6 +1,5 @@
 package compiler.lexer;
 
-import compiler.graph.Node;
 import compiler.lexer.token.CommentToken;
 import compiler.lexer.token.KeywordToken;
 import compiler.lexer.token.Token;
@@ -17,17 +16,17 @@ import static compiler.lexer.NonFinalState.FATAL_ERROR;
 import static compiler.utils.StringUtils.escape;
 
 public class Lexer {
-  private final TriConsumer<Node, Character, Node> onTransition;
-  private final TriConsumer<Node, Node, Token> onTokenCreated;
-  private final Node START_STATE;
+  private final TriConsumer<LexicalNode, Character, LexicalNode> transitionListeners;
+  private final TriConsumer<LexicalNode, LexicalNode, Token> tokenCreatedListeners;
+  private final LexicalNode START_STATE;
 
   protected Lexer(
-    Node startState,
-    TriConsumer<Node, Character, Node> onTransition,
-    TriConsumer<Node, Node, Token> onTokenCreated
+    LexicalNode startState,
+    TriConsumer<LexicalNode, Character, LexicalNode> transitionListeners,
+    TriConsumer<LexicalNode, LexicalNode, Token> tokenCreatedListeners
   ) {
-    this.onTransition = onTransition;
-    this.onTokenCreated = onTokenCreated;
+    this.transitionListeners = transitionListeners;
+    this.tokenCreatedListeners = tokenCreatedListeners;
     this.START_STATE = startState;
   }
 
@@ -39,13 +38,12 @@ public class Lexer {
     for (var letter : cursor) {
       var GOTO = CURRENT_STATE.ON(letter);
 
-      if (GOTO != END_OF_TERMINAL)
-        onTransition.accept(CURRENT_STATE, letter, GOTO);
+      transitionListeners.accept(CURRENT_STATE, letter, GOTO);
 
-      if (CURRENT_STATE instanceof FinalState && GOTO == END_OF_TERMINAL) {
-        var token = ((FinalState) CURRENT_STATE).buildToken(currentToken.toString());
+      if (GOTO == END_OF_TERMINAL) {
+        var token = ((FinalState) CURRENT_STATE).getToken(currentToken.toString());
         tokens.add(token);
-        onTokenCreated.accept(CURRENT_STATE, GOTO, token);
+        tokenCreatedListeners.accept(CURRENT_STATE, GOTO, token);
         currentToken.setLength(0);
         cursor.rewind();
         CURRENT_STATE = START_STATE;
