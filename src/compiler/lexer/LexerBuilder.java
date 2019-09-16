@@ -47,10 +47,6 @@ public class LexerBuilder {
 
     }
 
-    public Lexer createLexer() {
-      return new Lexer(startState, onTransition, onTokenCreated, onUnknownTokenFound);
-    }
-
     public LexerBuilderReady onTransition(TriConsumer<LexicalNode, Character, LexicalNode> onTransition) {
       LexerBuilder.this.onTransition(onTransition);
       return this;
@@ -64,6 +60,10 @@ public class LexerBuilder {
     public LexerBuilderReady onUnknownTokenFound(Consumer<String> onUnknownTokenFound) {
       LexerBuilder.this.onUnknownTokenFound(onUnknownTokenFound);
       return this;
+    }
+
+    public Lexer createLexer() {
+      return new Lexer(startState, onTransition, onTokenCreated, onUnknownTokenFound);
     }
   }
 }
