@@ -1,7 +1,7 @@
 package compiler.a5.lexicon;
 
 import compiler.graph.Node;
-import compiler.graph.Token.*;
+import compiler.lexer.Token.*;
 import compiler.lexer.FinalState;
 import compiler.lexer.NonFinalState;
 

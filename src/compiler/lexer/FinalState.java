@@ -1,7 +1,6 @@
 package compiler.lexer;
 
 import compiler.graph.Node;
-import compiler.graph.Token;
 
 import java.util.function.Function;
 

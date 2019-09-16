@@ -1,4 +1,4 @@
-package compiler.graph;
+package compiler.lexer;
 
 import java.util.HashMap;
 import java.util.Map;
