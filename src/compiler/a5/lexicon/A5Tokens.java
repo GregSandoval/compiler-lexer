@@ -1,6 +1,6 @@
-package A5.Lexicon;
+package compiler.a5.lexicon;
 
-import static Graph.Token.*;
+import static compiler.graph.Token.*;
 
 public class A5Tokens {
   // Unpaired delimiters

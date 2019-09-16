@@ -1,16 +1,16 @@
-package DFAGraph;
+package compiler.lexer;
 
-import Graph.Node;
-import Graph.Token;
-import utils.TextCursor;
-import utils.TriConsumer;
+import compiler.graph.Node;
+import compiler.graph.Token;
+import compiler.utils.TextCursor;
+import compiler.utils.TriConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static Graph.Node.NON_FINAL_STATE.END_OF_TERMINAL;
-import static Graph.Node.NON_FINAL_STATE.FATAL_ERROR;
+import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
+import static compiler.lexer.NonFinalState.FATAL_ERROR;
 
 public class Lexer {
   private final TriConsumer<Node, Character, Node> onTransition;
@@ -34,8 +34,8 @@ public class Lexer {
       if (GOTO != END_OF_TERMINAL)
         onTransition.accept(CURRENT_STATE, letter, GOTO);
 
-      if (CURRENT_STATE instanceof Node.FINAL_STATE && GOTO == END_OF_TERMINAL) {
-        var token = ((Node.FINAL_STATE) CURRENT_STATE).buildToken(escape(currentToken.toString()));
+      if (CURRENT_STATE instanceof FinalState && GOTO == END_OF_TERMINAL) {
+        var token = ((FinalState) CURRENT_STATE).buildToken(escape(currentToken.toString()));
         tokens.add(token);
         onTokenCreated.accept(CURRENT_STATE, GOTO, token);
         currentToken.setLength(0);

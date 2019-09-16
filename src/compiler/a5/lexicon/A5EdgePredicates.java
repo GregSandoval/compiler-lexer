@@ -1,8 +1,8 @@
-package DFAGraph;
+package compiler.a5.lexicon;
 
 import java.util.function.Predicate;
 
-public final class DFATransitionPredicates {
+public final class A5EdgePredicates {
   // CHARACTER SETS
   public static Predicate<Character> LOWER_CASE_LETTER = symbol -> symbol >= 'a' && symbol <= 'z';
   public static Predicate<Character> UPPER_CASE_LETTER = symbol -> symbol >= 'A' && symbol <= 'Z';

@@ -1,4 +1,4 @@
-package utils;
+package compiler.utils;
 
 import org.jetbrains.annotations.NotNull;
 
