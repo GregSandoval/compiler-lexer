@@ -1,13 +1,12 @@
 package compiler;
 
+import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.graph.Node;
 import compiler.graph.Token;
 import compiler.lexer.Lexer;
 import compiler.lexer.LexerBuilder;
 
 import java.util.List;
-
-import static compiler.a5.lexicon.A5LexiconDFA.START;
 
 
 public class LexerMain {
@@ -22,7 +21,7 @@ public class LexerMain {
     var lexer = new LexerBuilder()
       .onTransition(LexerMain::logTransition)
       .onTokenCreated(LexerMain::logAcceptedToken)
-      .setStartState(START)
+      .setStartState(A5LexiconDFA.START)
       .createLexer();
 
     System.out.println("Parsing: \n" + text + "\n");
