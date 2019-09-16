@@ -1,6 +1,9 @@
 package compiler.a5.lexicon;
 
-import static compiler.lexer.Token.*;
+import compiler.lexer.IDOffsetToken;
+import compiler.lexer.KeywordToken;
+import compiler.lexer.OperatorToken;
+import compiler.lexer.SymbolToken;
 
 public class A5Tokens {
   // Unpaired delimiters

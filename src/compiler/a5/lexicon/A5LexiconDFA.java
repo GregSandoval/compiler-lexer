@@ -1,9 +1,7 @@
 package compiler.a5.lexicon;
 
 import compiler.graph.Node;
-import compiler.lexer.Token.*;
-import compiler.lexer.FinalState;
-import compiler.lexer.NonFinalState;
+import compiler.lexer.*;
 
 import static compiler.a5.lexicon.A5EdgePredicates.*;
 
