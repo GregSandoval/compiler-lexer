@@ -5,7 +5,7 @@ import compiler.lexer.token.Token;
 
 import java.util.function.Function;
 
-public class FinalState extends Node {
+public class FinalState extends LexicalNode {
   private Function<String, Token> constructor;
   private Token instance;
 
