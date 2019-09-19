@@ -38,7 +38,7 @@ public class Main {
   }
 
   private static void logAcceptedToken(Node start, Node end, Token token) {
-    System.out.println("Accepted token value: \"" + escape(token.str) + "\"\n");
+    System.out.println("Accepted token value: \"" + escape(token.getValue()) + "\"\n");
   }
 
   private static void logUnknownToken(String unknownToken) {

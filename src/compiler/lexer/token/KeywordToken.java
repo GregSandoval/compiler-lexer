@@ -30,10 +30,11 @@ public final class KeywordToken extends Token {
   }
 
   public static Token get(Token identifier) {
-    if (keywords.containsKey(identifier.str)) {
-      final var keyword = new KeywordToken(identifier.str, keywords.get(identifier.str));
-      keyword.setLineNumber(identifier.lineNumber);
-      keyword.setLinePosition(identifier.linePosition);
+    final var tokenValue = identifier.getValue();
+    if (keywords.containsKey(tokenValue)) {
+      final var keyword = new KeywordToken(tokenValue, keywords.get(tokenValue));
+      keyword.setLineNumber(identifier.getLineNumber());
+      keyword.setLinePosition(identifier.getLinePosition());
       return keyword;
     }
     return identifier;

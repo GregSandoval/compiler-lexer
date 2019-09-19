@@ -56,7 +56,7 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
     return this.lineNumbers[cursor];
   }
 
-  public int getCursorLinePosition(){
+  public int getCursorLinePosition() {
     return this.linePositions[cursor];
   }
 

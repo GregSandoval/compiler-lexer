@@ -29,7 +29,7 @@ public class A5LexiconDFA {
 
   // Paired delimiters
   public static final LexicalNode LESS_THAN = new FinalState("LESS_THAN", OperatorToken.LessThan::new);
-  public static final LexicalNode GREATER_THAN = new FinalState("GREATER_THAN", OperatorToken.LessThan::new);
+  public static final LexicalNode GREATER_THAN = new FinalState("GREATER_THAN", OperatorToken.GreaterThan::new);
 
   public static final LexicalNode LEFT_BRACE = new FinalState("LEFT_BRACE", SymbolToken.LeftBrace::new);
   public static final LexicalNode RIGHT_BRACE = new FinalState("RIGHT_BRACE", SymbolToken.RightBrace::new);

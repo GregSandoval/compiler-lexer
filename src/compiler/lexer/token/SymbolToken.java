@@ -1,6 +1,7 @@
 package compiler.lexer.token;
 
 public class SymbolToken extends Token {
+
   private SymbolToken(String str, int UUID) {
     super(str, UUID);
   }
