@@ -28,7 +28,7 @@ public abstract class Token {
   }
 
   public final String toString() {
-    final var format = "(Tok: %s line= %s, %s str = \"%s\"%s)";
+    final var format = "(Tok: %s line= %s,%s str = \"%s\"%s)";
     return String.format(format, ID, lineNumber, linePosition, value, toStringExtra());
   }
 
