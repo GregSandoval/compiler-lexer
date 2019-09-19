@@ -3,22 +3,26 @@ package compiler.lexer;
 import compiler.lexer.token.Token;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class FinalState extends LexicalNode {
-  private Function<String, Token> constructor;
-  private Token instance;
+  private Function<String, Token> constructorWithString;
+  private Supplier<Token> constructorNoArgs;
 
-  public FinalState(String name, Function<String, Token> token) {
+  public FinalState(String name, Function<String, Token> constructor) {
     super(name);
-    this.constructor = token;
+    this.constructorWithString = constructor;
   }
 
-  public FinalState(String name, Token instance) {
+  public FinalState(String name, Supplier<Token> constructor) {
     super(name);
-    this.instance = instance;
+    this.constructorNoArgs = constructor;
   }
 
   public Token getToken(String str) {
-    return instance != null ? instance : this.constructor.apply(str);
+    if (constructorNoArgs != null) {
+      return constructorNoArgs.get();
+    }
+    return this.constructorWithString.apply(str);
   }
 }

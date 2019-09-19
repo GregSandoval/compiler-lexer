@@ -10,56 +10,56 @@ import static compiler.a5.lexicon.A5EdgePredicates.*;
 public class A5LexiconDFA {
   // DFA Grammar
   public static final LexicalNode START = new NonFinalState("START");
-  public static final LexicalNode IDENTIFIER = new FinalState("IDENTIFIER", IdentifierToken::build);
+  public static final LexicalNode IDENTIFIER = new FinalState("IDENTIFIER", IdentifierToken::new);
 
-  public static final LexicalNode INTEGER = new FinalState("INTEGER", IntegerToken::build);
+  public static final LexicalNode INTEGER = new FinalState("INTEGER", IntegerToken::new);
   public static final LexicalNode MAYBE_FLOAT = new NonFinalState("MAYBE_FLOAT");
-  public static final LexicalNode FLOAT = new FinalState("FLOAT", FloatToken::build);
+  public static final LexicalNode FLOAT = new FinalState("FLOAT", FloatToken::new);
 
   public static final LexicalNode OPENING_STRING = new NonFinalState("OPENING_STRING");
   public static final LexicalNode STRING_CONTENTS = new NonFinalState("STRING_CONTENTS");
-  public static final LexicalNode CLOSING_STRING = new FinalState("CLOSING_STRING", StringToken::build);
+  public static final LexicalNode CLOSING_STRING = new FinalState("CLOSING_STRING", StringToken::new);
 
   public static final LexicalNode WHITESPACE = new FinalState("WHITESPACE", WhitespaceToken::new);
   public static final LexicalNode COMMENT = new FinalState("COMMENT", CommentToken::new);
 
   // Unpaired delimiters
-  public static final LexicalNode COMMA = new FinalState("COMMA", A5Tokens.COMMA);
-  public static final LexicalNode SEMI_COLON = new FinalState("SEMI_COLON", A5Tokens.SEMI_COLON);
+  public static final LexicalNode COMMA = new FinalState("COMMA", SymbolToken.Comma::new);
+  public static final LexicalNode SEMI_COLON = new FinalState("SEMI_COLON", SymbolToken.SemiColon::new);
 
   // Paired delimiters
-  public static final LexicalNode LESS_THAN = new FinalState("LESS_THAN", A5Tokens.LESS_THAN);
-  public static final LexicalNode GREATER_THAN = new FinalState("GREATER_THAN", A5Tokens.GREATER_THAN);
+  public static final LexicalNode LESS_THAN = new FinalState("LESS_THAN", OperatorToken.LessThan::new);
+  public static final LexicalNode GREATER_THAN = new FinalState("GREATER_THAN", OperatorToken.LessThan::new);
 
-  public static final LexicalNode LEFT_BRACE = new FinalState("LEFT_BRACE", A5Tokens.LEFT_BRACE);
-  public static final LexicalNode RIGHT_BRACE = new FinalState("RIGHT_BRACE", A5Tokens.RIGHT_BRACE);
+  public static final LexicalNode LEFT_BRACE = new FinalState("LEFT_BRACE", SymbolToken.LeftBrace::new);
+  public static final LexicalNode RIGHT_BRACE = new FinalState("RIGHT_BRACE", SymbolToken.RightBrace::new);
 
-  public static final LexicalNode LEFT_BRACKET = new FinalState("LEFT_BRACKET", A5Tokens.LEFT_BRACKET);
-  public static final LexicalNode RIGHT_BRACKET = new FinalState("RIGHT_BRACKET", A5Tokens.RIGHT_BRACKET);
+  public static final LexicalNode LEFT_BRACKET = new FinalState("LEFT_BRACKET", SymbolToken.LeftBracket::new);
+  public static final LexicalNode RIGHT_BRACKET = new FinalState("RIGHT_BRACKET", SymbolToken.RightBracket::new);
 
-  public static final LexicalNode LEFT_PAREN = new FinalState("LEFT_PAREN", A5Tokens.LEFT_PAREN);
-  public static final LexicalNode RIGHT_PAREN = new FinalState("RIGHT_PAREN", A5Tokens.RIGHT_PAREN);
+  public static final LexicalNode LEFT_PAREN = new FinalState("LEFT_PAREN", SymbolToken.LeftParen::new);
+  public static final LexicalNode RIGHT_PAREN = new FinalState("RIGHT_PAREN", SymbolToken.RightParen::new);
 
   // Other punctuation tokens
-  public static final LexicalNode ASTERISK = new FinalState("ASTERISK", A5Tokens.ASTERISK);
-  public static final LexicalNode CARET = new FinalState("CARET", A5Tokens.CARET);
-  public static final LexicalNode COLON = new FinalState("COLON", A5Tokens.COLON);
-  public static final LexicalNode PERIOD = new FinalState("PERIOD", A5Tokens.PERIOD);
-  public static final LexicalNode EQUAL = new FinalState("EQUAL", A5Tokens.EQUAL);
-  public static final LexicalNode MINUS = new FinalState("MINUS", A5Tokens.MINUS);
-  public static final LexicalNode PLUS = new FinalState("PLUS", A5Tokens.PLUS);
-  public static final LexicalNode FORWARD_SLASH = new FinalState("FORWARD_SLASH", A5Tokens.FORWARD_SLASH);
-  public static final LexicalNode AND = new FinalState("AND", A5Tokens.AND);
-  public static final LexicalNode EXCLAMATION_MARK = new FinalState("EXCLAMATION_MARK", A5Tokens.EXCLAMATION_MARK);
+  public static final LexicalNode ASTERISK = new FinalState("ASTERISK", OperatorToken.Asterisk::new);
+  public static final LexicalNode CARET = new FinalState("CARET", SymbolToken.RightParen.Caret::new);
+  public static final LexicalNode COLON = new FinalState("COLON", SymbolToken.RightParen.Colon::new);
+  public static final LexicalNode PERIOD = new FinalState("PERIOD", SymbolToken.RightParen.Period::new);
+  public static final LexicalNode EQUAL = new FinalState("EQUAL", OperatorToken.Equal::new);
+  public static final LexicalNode MINUS = new FinalState("MINUS", OperatorToken.Minus::new);
+  public static final LexicalNode PLUS = new FinalState("PLUS", OperatorToken.Plus::new);
+  public static final LexicalNode FORWARD_SLASH = new FinalState("FORWARD_SLASH", SymbolToken.ForwardSlash::new);
+  public static final LexicalNode AND = new FinalState("AND", OperatorToken.Ampersand::new);
+  public static final LexicalNode EXCLAMATION_MARK = new FinalState("EXCLAMATION_MARK", SymbolToken.ExclamationMark::new);
 
   // Multi character operators
-  public static final LexicalNode OP_ARROW = new FinalState("OP_ARROW", A5Tokens.OP_ARROW);
-  public static final LexicalNode OP_EQUAL = new FinalState("OP_EQUAL", A5Tokens.OP_EQUAL);
-  public static final LexicalNode OP_NEGATE = new FinalState("OP_NEGATE", A5Tokens.OP_NEGATE);
-  public static final LexicalNode OP_LESS_THAN = new FinalState("OP_LESS_THAN", A5Tokens.OP_LESS_THAN);
-  public static final LexicalNode OP_GREATER_THAN = new FinalState("OP_GREATER_THAN", A5Tokens.OP_GREATER_THAN);
-  public static final LexicalNode OP_SHIFT_LEFT = new FinalState("OP_SHIFT_LEFT", A5Tokens.OP_SHIFT_LEFT);
-  public static final LexicalNode OP_SHIFT_RIGHT = new FinalState("OP_SHIFT_RIGHT", A5Tokens.OP_SHIFT_RIGHT);
+  public static final LexicalNode OP_ARROW = new FinalState("OP_ARROW", OperatorToken.Arrow::new);
+  public static final LexicalNode OP_EQUAL = new FinalState("OP_EQUAL", OperatorToken.EqualEqual::new);
+  public static final LexicalNode OP_NEGATE = new FinalState("OP_NEGATE", OperatorToken.NotEqual::new);
+  public static final LexicalNode OP_LESS_THAN = new FinalState("OP_LESS_THAN", OperatorToken.LessThanOrEqual::new);
+  public static final LexicalNode OP_GREATER_THAN = new FinalState("OP_GREATER_THAN", OperatorToken.GreaterThanOrEqual::new);
+  public static final LexicalNode OP_SHIFT_LEFT = new FinalState("OP_SHIFT_LEFT", OperatorToken.BitShiftLeft::new);
+  public static final LexicalNode OP_SHIFT_RIGHT = new FinalState("OP_SHIFT_RIGHT", OperatorToken.BitShiftRight::new);
 
   static {
     // WHITESPACE STATE

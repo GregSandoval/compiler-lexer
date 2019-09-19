@@ -1,23 +1,31 @@
 package compiler.lexer.token;
 
 public abstract class Token {
-  private static int UUID = 5;
+  private static String format = "(Tok: %s line= %s, %s str = \"%s\"%s)";
   public final String str;
   public final int ID;
-
-  protected Token(String str) {
-    this.str = str;
-    this.ID = ++UUID;
-  }
+  public int lineNumber;
+  public int linePosition;
 
   protected Token(String str, int UUID) {
     this.str = str;
     this.ID = UUID;
   }
 
-  @Override
-  public String toString() {
-    return "(Tok: " + ID + " line= <line, pos> str = \"" + this.str + "\")";
+  public void setLineNumber(int lineNumber){
+    this.lineNumber = lineNumber;
+  }
+
+  public void setLinePosition(int linePosition){
+    this.linePosition = linePosition;
+  }
+
+  public final String toString() {
+    return String.format(format, ID, lineNumber, linePosition, str,toStringExtra());
+  }
+
+  protected String toStringExtra(){
+    return "";
   }
 }
 

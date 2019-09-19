@@ -6,7 +6,7 @@ import java.util.Map;
 public final class StringToken extends Token {
   private static Map<String, StringToken> identityMap = new HashMap<>();
 
-  private StringToken(String str) {
+  public StringToken(String str) {
     super(str.replace("\"", ""), 5);
   }
 

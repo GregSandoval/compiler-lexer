@@ -45,6 +45,8 @@ public class Lexer {
 
       if (GOTO == END_OF_TERMINAL) {
         var token = ((FinalState) CURRENT_STATE).getToken(currentToken.toString());
+        token.setLineNumber(cursor.getCursorLineNumber());
+        token.setLinePosition(cursor.getCursorLinePosition() - currentToken.length());
         tokens.add(token);
         tokenCreatedListeners.accept(CURRENT_STATE, GOTO, token);
         currentToken.setLength(0);

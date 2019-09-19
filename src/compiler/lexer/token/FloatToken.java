@@ -6,7 +6,7 @@ import java.util.Map;
 public final class FloatToken extends TypedToken<Float> {
   private static Map<String, FloatToken> identityMap = new HashMap<>();
 
-  protected FloatToken(String str) {
+  public FloatToken(String str) {
     super(str, 4);
   }
 
@@ -20,7 +20,7 @@ public final class FloatToken extends TypedToken<Float> {
   }
 
   @Override
-  public String toString() {
-    return "(Tok: " + ID + " line= <line, pos> str = \"" + this.str + "\" flo= " + this.value + ")";
+  public String toStringExtra() {
+    return " flo= " + this.value;
   }
 }
