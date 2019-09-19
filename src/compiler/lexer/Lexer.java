@@ -9,7 +9,7 @@ import compiler.utils.TriConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
@@ -18,14 +18,14 @@ import static compiler.lexer.NonFinalState.FATAL_ERROR;
 public class Lexer {
   private final TriConsumer<LexicalNode, Character, LexicalNode> transitionListeners;
   private final TriConsumer<LexicalNode, LexicalNode, Token> tokenCreatedListeners;
-  private final Consumer<String> unknownTokenListener;
+  private final BiConsumer<String, TextCursor> unknownTokenListener;
   private final LexicalNode START_STATE;
 
   protected Lexer(
     LexicalNode startState,
     TriConsumer<LexicalNode, Character, LexicalNode> transitionListeners,
     TriConsumer<LexicalNode, LexicalNode, Token> tokenCreatedListeners,
-    Consumer<String> unknownTokenListener
+    BiConsumer<String, TextCursor> unknownTokenListener
   ) {
     this.transitionListeners = transitionListeners;
     this.tokenCreatedListeners = tokenCreatedListeners;
@@ -56,7 +56,7 @@ public class Lexer {
       }
 
       if (GOTO == FATAL_ERROR) {
-        unknownTokenListener.accept(currentToken.toString() + letter);
+        unknownTokenListener.accept(currentToken.toString() + letter, cursor);
         break;
       }
 

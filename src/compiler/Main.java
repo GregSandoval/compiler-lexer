@@ -4,6 +4,7 @@ import compiler.a5.lexicon.A5LexiconDFA;
 import compiler.graph.Node;
 import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
+import compiler.utils.TextCursor;
 
 import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
 import static compiler.utils.StringUtils.escape;
@@ -17,18 +18,18 @@ public class Main {
     "    }";
 
   public static void main(String[] args) {
-    System.out.println("Parsing text: \n" + text + "\n");
+    // System.out.println("Parsing text: \n" + text + "\n");
 
     final var lexer = new LexerBuilder()
-      .onTransition(Main::logTransition)
-      .onTokenCreated(Main::logAcceptedToken)
+      // .onTransition(Main::logTransition)
+      // .onTokenCreated(Main::logAcceptedToken)
       .onUnknownTokenFound(Main::logUnknownToken)
       .setStartState(A5LexiconDFA.START)
       .createLexer();
 
     final var terminals = lexer.analyze(text);
 
-    System.out.printf("\nAccepted %s tokens: \n", terminals.size());
+    // System.out.printf("\nAccepted %s tokens: \n", terminals.size());
     terminals.forEach(System.out::println);
   }
 
@@ -41,7 +42,11 @@ public class Main {
     System.out.println("Accepted token value: \"" + escape(token.getValue()) + "\"\n");
   }
 
-  private static void logUnknownToken(String unknownToken) {
+  private static void logUnknownToken(String unknownToken, TextCursor cursor) {
+    final var line = cursor.getCursorLineNumber();
+    final var pos = cursor.getCursorLinePosition() - unknownToken.length();
     System.out.println("Unknown token: '" + escape(unknownToken) + "'\n");
+    System.out.printf("Error occurred on line %s, position %s", line, pos);
+    System.exit(0);
   }
 }
