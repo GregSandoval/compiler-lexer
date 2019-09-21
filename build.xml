@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lexer" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="700m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.yarb/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/vssver.scc/**"/>
+    <exclude name="**/vssver2.scc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+    <include name="*.ear"/>
+    <include name="*.klib"/>
+    <include name="*.swc"/>
+    <include name="*.war"/>
+    <include name="*.zip"/>
+    <include name="*.ane"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <exclude name="**/?*.java"/>
+    <exclude name="**/?*.form"/>
+    <exclude name="**/?*.class"/>
+    <exclude name="**/?*.groovy"/>
+    <exclude name="**/?*.scala"/>
+    <exclude name="**/?*.flex"/>
+    <exclude name="**/?*.kt"/>
+    <exclude name="**/?*.clj"/>
+    <exclude name="**/?*.aj"/>
+  </patternset>
+  
+  
+  <!-- Global Libraries -->
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module Lexer -->
+  
+  <dirname property="module.lexer.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.lexer" value="-encoding UTF-8 -source 13 -target 13 ${compiler.args}"/>
+  
+  <property name="lexer.output.dir" value="${module.lexer.basedir}/out/production/Lexer"/>
+  <property name="lexer.testoutput.dir" value="${module.lexer.basedir}/out/test/Lexer"/>
+  
+  <path id="lexer.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="lexer.module.production.classpath">
+    <pathelement location="${path.variable.maven_repository}/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar"/>
+  </path>
+  
+  <path id="lexer.runtime.production.module.classpath">
+    <pathelement location="${lexer.output.dir}"/>
+    <pathelement location="${path.variable.maven_repository}/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar"/>
+  </path>
+  
+  <path id="lexer.module.classpath">
+    <pathelement location="${lexer.output.dir}"/>
+    <pathelement location="${path.variable.maven_repository}/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar"/>
+  </path>
+  
+  <path id="lexer.runtime.module.classpath">
+    <pathelement location="${lexer.testoutput.dir}"/>
+    <pathelement location="${lexer.output.dir}"/>
+    <pathelement location="${path.variable.maven_repository}/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.lexer">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.lexer">
+    <patternset refid="excluded.from.module.lexer"/>
+  </patternset>
+  
+  <path id="lexer.module.sourcepath">
+    <dirset dir="${module.lexer.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.lexer" depends="compile.module.lexer.production,compile.module.lexer.tests" description="Compile module Lexer"/>
+  
+  <target name="compile.module.lexer.production" description="Compile module Lexer; production classes">
+    <mkdir dir="${lexer.output.dir}"/>
+    <javac destdir="${lexer.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.lexer}"/>
+      <bootclasspath refid="lexer.module.bootclasspath"/>
+      <classpath refid="lexer.module.production.classpath"/>
+      <src refid="lexer.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.lexer"/>
+    </javac>
+    
+    <copy todir="${lexer.output.dir}">
+      <fileset dir="${module.lexer.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.lexer.tests" depends="compile.module.lexer.production" description="compile module Lexer; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.lexer" description="cleanup module">
+    <delete dir="${lexer.output.dir}"/>
+    <delete dir="${lexer.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.lexer" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.lexer" description="build all modules"/>
+  
+  <target name="all" depends="build.modules" description="build all"/>
+</project>
