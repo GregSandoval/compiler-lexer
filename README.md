@@ -26,9 +26,9 @@ be modeled by iteratively passing a character to the lexer, which defers to the 
 until no viable transition can be made, accepting the token on a final
 state.
 
-The code comes with several built-in predicates for letters, numbers, whitespace,
-etc. Using a Regular expression would defeat the purpose of the project, as it's
-an entire DFA, which is cheating! 
+The code comes with several built-in predicates for detection of letters, numbers, 
+whitespace, etc. I could've used a regular expression, but that's cheating! You wouldn't
+write a hashtable using a hashtable right? :)
 
 ### Example Code
 ```java
