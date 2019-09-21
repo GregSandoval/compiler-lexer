@@ -68,7 +68,10 @@ class MyHeavyHitterClass {
 
 
 The grammar corresponds to the following DFA, like in most texts, consider
-any missing transitions to exist and go to a common error state.
+any missing transitions to exist and lead to a shared error state. The diagram
+doesn't include non-terminals, since it would be far too large to display! Please
+excuse the use of a regular expression for edges, including every edge would be a 
+horrible mess. 
 
 ![image](./LexerDFADiagram.png)
 ## Dependencies
@@ -95,5 +98,4 @@ java -cp ./out/production/Lexer compiler.Main < TestInput.txt
 - Add tests.
 - Introduce another layer of indirection.
 - Rethink treatment of keywords.
-- Construct diagram for DFA
 - Construct EBNF for A5 programming language
