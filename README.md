@@ -65,7 +65,73 @@ class MyHeavyHitterClass {
 ```
 
 ## Grammar
+```
+01. comment = '//' .*  // Treat as whitespace up to newline char; like C/C++/Java.
+02. id = LU LUD *  // identifier.
+    LU = '_' | [a-zA-Z]  // Letter-Underscore.
+    LUD = LU | [0-9]  // Letter-Underscore-Digit.
+03. int = SIGN ? DIGITS // integer.
+04. float = int [ '.' DIGITS ] ? // float.
+05. string = '"' .* '"' // Cannot contain a double-quote char.
+    SIGN = plus | minus
+    DIGITS = [0-9] +
+  
+// Unpaired delimiters
+06. comma = ','
+07. semi = ';'
+ 
+// Keywords
+10. kprog = "prog"
+11. kmain = "main"
+12. kfcn = "fcn"
+13. kclass = "class"
+15. kfloat = "float"
+16. kint = "int"
+17. kstring = "string"
+18. kif = "if"
+19. kelseif = "elseif"
+20. kelse = "else"
+21. kwhile = "while"
+22. kinput = "input"
+23. kprint = "print"
+24. knew = "new"
+25. kreturn = "return"
+26. kvar = "var"
 
+// Paired delimeters
+31. angle1 = '<'
+32. angle2 = '>'
+33. brace1 = '{'
+34. brace2 = '}'
+35. bracket1 = '['
+36. bracket2 = ']'
+37. parens1 = '('
+38. parens2 = ')'
+
+// Other punctuation tokens
+41. aster = '*'
+42. caret = '^'
+43. colon = ':'
+44. dot = '.'
+45. equal = '='
+46. minus = '-'
+47. plus = '+'
+48. slash = '/'
+49. ampersand = '&'
+
+// Multi-char operators
+51. oparrow = "->"
+52. opeq = "=="
+53. opne = "!="
+54. ople = "<="
+55. opge = ">="
+56. opshl = "<<"
+57. opshr = ">>"
+
+// Miscellaeous
+99. error // Unknown token.
+00. eof // End-of-Input.\
+ ```
 
 The grammar corresponds to the following DFA, like in most texts, consider
 any missing transitions to exist and lead to a shared error state. The diagram
