@@ -75,13 +75,11 @@ horrible mess.
 
 ![image](./LexerDFADiagram.png)
 ## Dependencies
-- Java 12
-- Ant
+```shell script
+brew install java
+brew install ant
+```
 
-## Installing Dependencies 
-`brew install ant`
-
-`brew install java`
 
 ## How to run
 In the root directory, run the following commands.
