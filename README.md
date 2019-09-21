@@ -70,7 +70,7 @@ class MyHeavyHitterClass {
 The grammar corresponds to the following DFA, like in most texts, consider
 any missing transitions to exist and go to a common error state.
 
-![image](./DFA%20%20Diagram.png)
+![image](./LexerDFADiagram.png)
 ## Dependencies
 - Java 12
 - Ant
