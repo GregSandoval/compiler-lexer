@@ -1,9 +1,10 @@
 package compiler.lexer;
 
 import compiler.lexer.token.Token;
+import compiler.utils.TextCursor;
 import compiler.utils.TriConsumer;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class LexerBuilder {
   private TriConsumer<LexicalNode, Character, LexicalNode> onTransition = (i, j, k) -> {
@@ -12,7 +13,7 @@ public class LexerBuilder {
   private TriConsumer<LexicalNode, LexicalNode, Token> onTokenCreated = (i, j, k) -> {
   };
 
-  private Consumer<String> onUnknownTokenFound = (ignored) -> {
+  private BiConsumer<String, TextCursor> onUnknownTokenFound = (__, ___) -> {
 
   };
 
@@ -32,7 +33,7 @@ public class LexerBuilder {
     return this;
   }
 
-  public LexerBuilder onUnknownTokenFound(Consumer<String> onUnknownTokenFound) {
+  public LexerBuilder onUnknownTokenFound(BiConsumer<String, TextCursor> onUnknownTokenFound) {
     this.onUnknownTokenFound = this.onUnknownTokenFound.andThen(onUnknownTokenFound);
     return this;
   }
@@ -57,7 +58,7 @@ public class LexerBuilder {
       return this;
     }
 
-    public LexerBuilderReady onUnknownTokenFound(Consumer<String> onUnknownTokenFound) {
+    public LexerBuilderReady onUnknownTokenFound(BiConsumer<String, TextCursor> onUnknownTokenFound) {
       LexerBuilder.this.onUnknownTokenFound(onUnknownTokenFound);
       return this;
     }

@@ -13,12 +13,12 @@ public class LexicalNode extends Node<LexicalNode> {
     super(name, LexicalNode::routeErrorToCustomStates);
   }
 
+  private static Optional<LexicalNode> routeErrorToCustomStates(LexicalNode from) {
+    return Optional.of(from instanceof FinalState ? END_OF_TERMINAL : FATAL_ERROR);
+  }
+
   @Override
   protected LexicalNode me() {
     return this;
-  }
-
-  private static Optional<LexicalNode> routeErrorToCustomStates(LexicalNode from) {
-    return Optional.of(from instanceof FinalState ? END_OF_TERMINAL : FATAL_ERROR);
   }
 }

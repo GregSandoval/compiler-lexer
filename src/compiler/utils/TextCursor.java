@@ -7,10 +7,31 @@ import java.util.NoSuchElementException;
 
 public class TextCursor implements Iterator<Character>, Iterable<Character> {
   private final char[] text;
+  private final int[] lineNumbers;
+  private final int[] linePositions;
+
   private int cursor = -1;
 
   public TextCursor(@NotNull String text) {
-    this.text = (text + " ").toCharArray();
+    this.text = (text + "\n").toCharArray();
+    this.lineNumbers = new int[this.text.length];
+    this.linePositions = new int[this.text.length];
+    int line = 1;
+    int pos = 1;
+    for (var i = 0; i < this.text.length; i++) {
+      lineNumbers[i] = line;
+      linePositions[i] = pos;
+      if (isNewLine(this.text[i])) {
+        line++;
+        pos = 0;
+      }
+      pos++;
+    }
+
+  }
+
+  private static boolean isNewLine(char letter) {
+    return letter == '\n' || letter == '\r' || letter == '\f';
   }
 
   @Override
@@ -33,6 +54,29 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
     }
 
     cursor--;
+  }
+
+  public int getCursorLineNumber() {
+    return this.lineNumbers[cursor];
+  }
+
+  public int getCursorLinePosition() {
+    return this.linePositions[cursor];
+  }
+
+  public String getCurrentLineOfText() {
+    final var savedCursor = cursor;
+    final var lineBuilder = new StringBuilder();
+    while (cursor != 0 && !isNewLine(this.text[cursor - 1])) {
+      --cursor;
+    }
+
+    while (hasNext() && !isNewLine(this.text[cursor])) {
+      lineBuilder.append(this.text[cursor++]);
+    }
+
+    cursor = savedCursor;
+    return lineBuilder.toString();
   }
 
   @NotNull
