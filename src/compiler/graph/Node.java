@@ -13,17 +13,13 @@ public abstract class Node<T extends Node<T>> {
   private final List<Function<Character, T>> transitions = new ArrayList<>();
   private final String name;
 
-  protected Node(String name) {
-    this(name, ignored -> Optional.empty());
-  }
-
   protected Node(String name, Function<T, Optional<T>> onError) {
     this.name = name;
     this.onError = () -> onError.apply(me());
   }
 
-  public PartialEdge<T> ON(Predicate<Character> predicate) {
-    return end -> transitions.add(character -> predicate.test(character) ? end : null);
+  public EdgeBuilder ON(Predicate<Character> predicate) {
+    return new EdgeBuilder(predicate);
   }
 
   public T ON(Character character) {
@@ -41,8 +37,26 @@ public abstract class Node<T extends Node<T>> {
     return name;
   }
 
-  public interface PartialEdge<T> {
-    void GOTO(T end);
+  public class EdgeBuilder {
+    private Predicate<Character> predicates;
+
+    private EdgeBuilder(Predicate<Character> seedPredicate) {
+      this.predicates = seedPredicate;
+    }
+
+    public EdgeBuilder AND(Predicate<Character> predicate) {
+      this.predicates = this.predicates.and(predicate);
+      return this;
+    }
+
+    public EdgeBuilder OR(Predicate<Character> predicate) {
+      this.predicates = this.predicates.or(predicate);
+      return this;
+    }
+
+    public void GOTO(T end) {
+      transitions.add(character -> predicates.test(character) ? end : null);
+    }
   }
 
   protected abstract T me();

@@ -22,8 +22,8 @@ public class Main {
     // System.out.println("Parsing text: \n" + text + "\n");
 
     final var lexer = new LexerBuilder()
-      // .onTransition(Main::logTransition)
-      // .onTokenCreated(Main::logAcceptedToken)
+      //.onTransition(Main::logTransition)
+      //.onTokenCreated(Main::logAcceptedToken)
       .onUnknownTokenFound(Main::logUnknownToken)
       .setStartState(A5LexiconDFA.START)
       .createLexer();
@@ -51,7 +51,7 @@ public class Main {
     System.out.println(cursor.getCurrentLineOfText());
 
     final var builder = new StringBuilder();
-    while(builder.length() <= pos - 1){
+    while (builder.length() <= pos - 1) {
       builder.append(' ');
     }
     builder.append('^');
