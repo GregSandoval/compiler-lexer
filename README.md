@@ -63,6 +63,14 @@ class MyHeavyHitterClass {
   }
 }
 ```
+
+## A5 Grammar
+
+
+The grammar corresponds to the following DFA, like in most texts, consider
+any missing transitions to exist and go to a common error state.
+
+![image](./DFA%20%20Diagram.png)
 ## Dependencies
 - Java 12
 - Ant
