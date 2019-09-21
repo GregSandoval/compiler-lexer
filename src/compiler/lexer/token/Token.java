@@ -11,20 +11,20 @@ public abstract class Token {
     this.ID = UUID;
   }
 
-  public void setLineNumber(int lineNumber) {
-    this.lineNumber = lineNumber;
-  }
-
   public int getLineNumber() {
     return this.lineNumber;
   }
 
-  public void setLinePosition(int linePosition) {
-    this.linePosition = linePosition;
+  public void setLineNumber(int lineNumber) {
+    this.lineNumber = lineNumber;
   }
 
   public int getLinePosition() {
     return this.linePosition;
+  }
+
+  public void setLinePosition(int linePosition) {
+    this.linePosition = linePosition;
   }
 
   public final String toString() {

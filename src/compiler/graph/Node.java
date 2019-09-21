@@ -37,6 +37,8 @@ public abstract class Node<T extends Node<T>> {
     return name;
   }
 
+  protected abstract T me();
+
   public class EdgeBuilder {
     private Predicate<Character> predicates;
 
@@ -58,7 +60,5 @@ public abstract class Node<T extends Node<T>> {
       transitions.add(character -> predicates.test(character) ? end : null);
     }
   }
-
-  protected abstract T me();
 }
 
