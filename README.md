@@ -64,7 +64,7 @@ class MyHeavyHitterClass {
 }
 ```
 
-## A5 Grammar
+## Grammar
 
 
 The grammar corresponds to the following DFA, like in most texts, consider
@@ -78,12 +78,12 @@ horrible mess.
 - Java 12
 - Ant
 
-# Installing Dependencies 
+## Installing Dependencies 
 `brew install ant`
 
 `brew install java`
 
-# How to run
+## How to run
 In the root directory, run the following commands.
 The first command builds the java code. The second passes a text file
 to the lexer. The lexer outputs the results to standard out in `.alex` format.
