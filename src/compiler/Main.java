@@ -6,6 +6,7 @@ import compiler.lexer.LexerBuilder;
 import compiler.lexer.token.Token;
 import compiler.utils.TextCursor;
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -19,19 +20,31 @@ public class Main {
     final var scanner = new Scanner(System.in).useDelimiter(Pattern.compile("$"));
     final var text = scanner.hasNext() ? scanner.next() : "";
 
-    // System.out.println("Parsing text: \n" + text + "\n");
+    final var builder = new LexerBuilder();
 
-    final var lexer = new LexerBuilder()
-      //.onTransition(Main::logTransition)
-      //.onTokenCreated(Main::logAcceptedToken)
+    configureBuilderWithCLIArgs(builder, args);
+
+    final var lexer = builder
       .onUnknownTokenFound(Main::logUnknownToken)
       .setStartState(A5LexiconDFA.START)
       .createLexer();
 
     final var terminals = lexer.analyze(text);
 
-    // System.out.printf("\nAccepted %s tokens: \n", terminals.size());
     terminals.forEach(System.out::println);
+  }
+
+  private static void configureBuilderWithCLIArgs(LexerBuilder builder, String[] args) {
+    if (args.length == 1)
+      return;
+    var validArg = Arrays.stream(args)
+      .filter(arg -> arg.equals("verbose"))
+      .findFirst();
+
+    if (validArg.isPresent()) {
+      builder.onTransition(Main::logTransition);
+      builder.onTokenCreated(Main::logAcceptedToken);
+    }
   }
 
   private static void logTransition(Node start, Character character, Node end) {
