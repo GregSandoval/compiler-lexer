@@ -1,23 +1,25 @@
-# Introduction 
+# A5 Programming Language Lexer
+
+## Introduction 
 The objective of this assignment is to write a lexer for the A5 language lexicon: 
 its tokens (i.e., legal “words”). The lexer transforms an A5 high-level program 
 sequence of characters into a list of tokens for that program (in a special format).
- For convenience, this lexer will take input from standard-input (stdin) and send 
- output to standard-output (stdout). 
+For convenience, this lexer will take input from standard-input (stdin) and send 
+output to standard-output (stdout). 
  
-# Team
-Gregory A. Sandoval
- 
-# A5 Programming Language Lexer
-A simple lexer for the A5 Programming language. The goal of the project is to
-create a __simple__ and __readable__ lexer. 
-
 A Lexer is a deterministic finite automata. This is generally hidden 
 behind layers of character manipulations. Instead, I wanted to focus on 
 the DFA itself, and let the low level details fade in background. This led
 to modeling the graph, then modeling a lexer, which uses the graph. The lexer 
 depends on the graph, but the graph does not know the lexer exists. Similarly, 
 the lexer doesn't know about the regular language, rules can be added arbitrarily!
+
+### Team
+Gregory A. Sandoval
+ 
+A simple lexer for the A5 Programming language. The goal of the project is to
+create a __simple__ and __readable__ lexer. 
+
 
 ## The Graph
 There is no 'Graph' class, rather a node holds a reference to a list of
