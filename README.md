@@ -1,47 +1,67 @@
 # A5 Programming Language Lexer
 
-## Introduction 
-The objective of this assignment is to write a lexer for the A5 language lexicon: 
-its tokens (i.e., legal “words”). The lexer transforms an A5 high-level program 
-sequence of characters into a list of tokens for that program (in a special format).
-For convenience, this lexer will take input from standard-input (stdin) and send 
-output to standard-output (stdout). 
- 
-A Lexer is a deterministic finite automata. This is generally hidden 
-behind layers of character manipulations. Instead, I wanted to focus on 
-the DFA itself, and let the low level details fade in background. This led
-to modeling the graph, then modeling a lexer, which uses the graph. The lexer 
-depends on the graph, but the graph does not know the lexer exists. Similarly, 
-the lexer doesn't know about the regular language, rules can be added arbitrarily!
-
-A simple lexer for the A5 Programming language. The goal of the project is to
-create a __simple__ and __readable__ lexer. 
-
 ### Team
 Gregory A. Sandoval
+
+## Introduction 
+The objective of this assignment is to write a lexer for the A5 language
+lexicon: its tokens (i.e., legal ``words''). The lexer transforms an A5
+high-level program sequence of characters into a list of tokens for that
+program (in a special format). For convenience, this lexer will take
+input from standard-input (stdin) and send output to standard-output
+(stdout).
+
+A lexer is a deterministic finite automata. This is generally hidden
+behind layers of character manipulation and large switch statements. 
+Instead, I wanted to focus on the DFA itself, and let the low level 
+details fade in background. This led to modeling the graph, then modeling
+a lexer, which uses the graph. The core of the code revolved around the 
+idea that a lexer shouldn't have to know about the language it's lexing, it should 
+just take in the graph that represents the language, and the tokens to 
+produce, and it should just work. Furthermore, the tokens that are parsed 
+should be distinguishable, with little to no 'special cases'. This involved a
+heavy use of polymorphism and generics. This allows you to quickly find type
+information using the instanceof operator, rather than carrying around a type
+field that you use to determine what type the value is, which is not ideal. 
+Although the code hasn't reached the full goal, it's enough to 
+complete this assignment. 
  
 ## The Graph
-There is no 'Graph' class, rather a node holds a reference to a list of
-other nodes, making edges. Each of these 'edges' has a corresponding predicate 
-function, which takes some parameter and returns whether we should 'walk' to 
-the other node. Walking the graph can be done by repeatedly finding the next
-node to walk to giving a particular object. 
+To model the DFA, I needed a way to model a graph. Rather than taking the 
+traditional approach of an adjacency list, I opted for just nodes. There is
+no 'Graph' class, rather a node holds a reference to a list of
+other nodes, making edges. Each of these 'edges' has a corresponding
+predicate function, which takes some parameter and returns whether we
+should `walk' to the other node. Walking the graph can be done by
+repeatedly finding the next node to walk to giving a particular object.
 
 ## The Lexer
-Given the graph abstraction, we can create a deterministic finite automata using
-a graph. Each graph node represents a state in the DFA; Each graph edge
-has a predicate function that determines if the letter would cause a transition. 
-The lexer *_extends_* the graph nodes, adding relevant information, i.e,
-if the current state is a *final* or *non-final* state. Accepting tokens would 
-be modeled by iteratively passing a character to the lexer, which defers to the graph,
-until no viable transition can be made, accepting the token on a final
-state.
+Given the graph abstraction, we can create a deterministic finite
+automata using a graph. Each graph node represents a state in the DFA;
+Each graph edge has a predicate function that determines if a letter
+would cause a transition. The lexer _extends_ graph
+nodes, adding relevant information, i.e, if the current state is a
+*final* or *non-final* state. Accepting tokens would be
+modeled by iteratively passing a character to the lexer, which defers to
+the graph, until no viable transition can be made, accepting the token
+on a final state.
 
-The code comes with several built-in predicates for detection of letters, numbers, 
-whitespace, etc. I could've used a regular expression, but that's cheating! You wouldn't
-write a hashtable using a hashtable right? :)
+The code comes with several built-in predicates for detection of
+letters, numbers, white space, etc. I could've used a regular expression for
+detecting character classes, but that's cheating! 
+You wouldn't write a hash table using a hash table right? :)
 
 ### Example Code
+Although the code for parsing is somewhat readable, it's a far cry from 
+perfect. From a high level perspective, I wanted the code to read like the
+grammar itself. Unfortunately, we must define states before they're used,
+which makes the code not so declarative, but the alternative was using pure
+strings, which cannot be checked at compile time, risking runtime errors.
+So, apologies for the sheer number of classes! I considered them a hard
+requirement, as it allows the comparison of token types directly, as opposed
+to deferring to some internal variable of the token class, and writing
+several special cases.
+
 ```java
 import compiler.lexer.FinalState;
 import compiler.lexer.LexerBuilder;
@@ -52,6 +72,7 @@ import compiler.lexer.token.WhitespaceToken;
 import static compiler.a5.lexicon.A5EdgePredicates.*;
 
 class MyHeavyHitterClass {
+  // Lexer for integers, skipping white spaces
   public static void main(String[] args) {
     // States
     var START = new NonFinalState("START");
@@ -75,15 +96,26 @@ class MyHeavyHitterClass {
 }
 ```
 
-## Grammar
+## A5 Grammar
+The grammar for the A5 programming language is defined using the normal
+regular expression syntax found in most programming languages. The numbers 
+next to production rule is the token ID. The token ID is part of the produced 
+output.
+
+The grammar corresponds to the DFA depicted in Figure 1, like in most texts,
+consider any missing transitions to exist and lead to a shared error
+state. The diagram doesn't include non-terminals, since it would be far
+too large to display! Please excuse the use of a regular expression for
+edges, including every edge would be a horrible mess.
+
 ```
-01. comment = '//' .*  // Treat as whitespace up to newline char; like C/C++/Java.
-02. id = LU LUD *  // identifier.
-    LU = '_' | [a-zA-Z]  // Letter-Underscore.
-    LUD = LU | [0-9]  // Letter-Underscore-Digit.
-03. int = SIGN ? DIGITS // integer.
-04. float = int [ '.' DIGITS ] ? // float.
-05. string = '"' .* '"' // Cannot contain a double-quote char.
+01. comment = '//' .*  
+02. id = LU LUD *  
+    LU = '_' | [a-zA-Z]  
+    LUD = LU | [0-9]  
+03. int = SIGN ? DIGITS 
+04. float = int [ '.' DIGITS ] ? 
+05. string = '"' .* '"' 
     SIGN = plus | minus
     DIGITS = [0-9] +
   
@@ -144,12 +176,6 @@ class MyHeavyHitterClass {
 00. eof // End-of-Input.\
  ```
 
-The grammar corresponds to the following DFA, like in most texts, consider
-any missing transitions to exist and lead to a shared error state. The diagram
-doesn't include non-terminals, since it would be far too large to display! Please
-excuse the use of a regular expression for edges, including every edge would be a 
-horrible mess. 
-
 ![image](LexerDFADiagram.png)
 
 ## Dependencies
@@ -160,17 +186,17 @@ brew install ant
 
 
 ## How to run
-In the root directory, run the following commands.
-The first command builds the java code. The second passes a text file
-to the lexer. The lexer outputs the results to standard out in `.alex` format.
+In the root directory, run the following commands. The first command
+builds the java code. The second passes a text file to the lexer. The
+lexer outputs the results to standard out, in `.alex` format.
 
 ```
 ant
 java -cp ./out/production/Lexer compiler.Main < TestInput.txt
 ```
 
-I've included a sample test file, the expected result after running the java
-code should be
+I've included a sample test file, the expected result after running the
+java code should be as follows.
 
 ```
 (Tok: 10 lin= 1,1 str = "prog")
