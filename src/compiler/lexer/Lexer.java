@@ -64,6 +64,12 @@ public class Lexer {
       CURRENT_STATE = GOTO;
     }
 
+    // Add eof :)
+    var eof = new Token("", 0){};
+    eof.setLinePosition(cursor.getCursorLinePosition());
+    eof.setLineNumber(cursor.getCursorLineNumber());
+    tokens.add(eof);
+
     return tokens
       .stream()
       .filter(terminal -> !(terminal instanceof WhitespaceToken))
