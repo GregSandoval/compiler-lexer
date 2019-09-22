@@ -156,10 +156,3 @@ to the lexer. The lexer outputs the results to standard out in `.alex` format.
 ant
 java -cp ./out/production/Lexer compiler.Main < TestInput.txt
 ```
-
-#### TODO
-- Clean code, requirements changed, and old designs aren't cutting the mustard anymore.
-- Add tests.
-- Introduce another layer of indirection.
-- Rethink treatment of keywords.
-- Construct EBNF for A5 programming language
