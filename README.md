@@ -225,6 +225,33 @@ like so
 java -cp ./out/production/Lexer compiler.Main -verbose < TestInput.txt 
 ```
 
+The command outputs some informative transitions, helps with debugging grammar :)
+
+```shell script
+START           = 'p' => IDENTIFIER     
+IDENTIFIER      = 'r' => IDENTIFIER     
+IDENTIFIER      = 'o' => IDENTIFIER     
+IDENTIFIER      = 'g' => IDENTIFIER     
+Accepted token value: "prog"
+
+START           = ' ' => WHITESPACE     
+Accepted token value: " "
+
+START           = 'm' => IDENTIFIER     
+IDENTIFIER      = 'a' => IDENTIFIER     
+IDENTIFIER      = 'i' => IDENTIFIER     
+IDENTIFIER      = 'n' => IDENTIFIER     
+Accepted token value: "main"
+
+START           = ' ' => WHITESPACE     
+Accepted token value: " "
+
+START           = '{' => LEFT_BRACE     
+Accepted token value: "{"
+
+[ The rest has been removed ]
+```
+
 
 ## Features
 - Ability to log every transition in the DFA.
