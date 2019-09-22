@@ -218,6 +218,14 @@ code should be
 (Tok: 0 lin= 6,2 str = "")
 ```
 
+To print every transition performed in the DFA, pass the cli option of `-verbose`,
+like so
+
+```shell script
+java -cp ./out/production/Lexer compiler.Main -verbose < TestInput.txt 
+```
+
+
 ## Features
 - Ability to log every transition in the DFA.
 - Tracks line number and position.

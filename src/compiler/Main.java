@@ -35,10 +35,11 @@ public class Main {
   }
 
   private static void configureBuilderWithCLIArgs(LexerBuilder builder, String[] args) {
-    if (args.length == 1)
+    if (args.length < 1)
       return;
+
     var validArg = Arrays.stream(args)
-      .filter(arg -> arg.equals("verbose"))
+      .filter(arg -> arg.equals("-verbose"))
       .findFirst();
 
     if (validArg.isPresent()) {
