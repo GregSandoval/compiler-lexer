@@ -50,7 +50,7 @@ public class A5LexiconDFA {
   public static final LexicalNode PLUS = new FinalState("PLUS", OperatorToken.Plus::new);
   public static final LexicalNode FORWARD_SLASH = new FinalState("FORWARD_SLASH", SymbolToken.ForwardSlash::new);
   public static final LexicalNode AND = new FinalState("AND", OperatorToken.Ampersand::new);
-  public static final LexicalNode EXCLAMATION_MARK = new FinalState("EXCLAMATION_MARK", SymbolToken.ExclamationMark::new);
+  public static final LexicalNode EXCLAMATION_MARK = new NonFinalState("EXCLAMATION_MARK");
 
   // Multi character operators
   public static final LexicalNode OP_ARROW = new FinalState("OP_ARROW", OperatorToken.Arrow::new);

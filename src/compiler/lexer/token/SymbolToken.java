@@ -78,10 +78,4 @@ public class SymbolToken extends Token {
     }
   }
 
-  public static class ExclamationMark extends SymbolToken {
-    public ExclamationMark() {
-      super("!", 100);
-    }
-  }
-
 }

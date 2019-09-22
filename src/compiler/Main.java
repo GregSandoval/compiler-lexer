@@ -50,7 +50,7 @@ public class Main {
 
   private static void logTransition(Node start, Character character, Node end) {
     if (end != END_OF_TERMINAL)
-      System.out.printf("%-15s = %-4s=> %-15s\n", start, "'" + escape(character) + "'", end);
+      System.out.printf("%-19s = %-4s=> %-15s\n", start, "'" + escape(character) + "'", end);
   }
 
   private static void logAcceptedToken(Node start, Node end, Token token) {
@@ -61,7 +61,7 @@ public class Main {
     final var line = cursor.getCursorLineNumber();
     final var pos = cursor.getCursorLinePosition() - unknownToken.length();
 
-    System.out.printf("Error occurred on line %s, position %s; Unexpected symbol\n", line, pos);
+    System.out.printf("\nError occurred on line %s, position %s; Unexpected symbol\n", line, pos);
     System.out.println(cursor.getCurrentLineOfText());
 
     final var builder = new StringBuilder();

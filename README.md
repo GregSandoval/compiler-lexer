@@ -150,7 +150,7 @@ doesn't include non-terminals, since it would be far too large to display! Pleas
 excuse the use of a regular expression for edges, including every edge would be a 
 horrible mess. 
 
-![image](./LexerDFADiagram.png)
+![image](LexerDFADiagram.png)
 
 ## Dependencies
 ```shell script
@@ -164,7 +164,7 @@ In the root directory, run the following commands.
 The first command builds the java code. The second passes a text file
 to the lexer. The lexer outputs the results to standard out in `.alex` format.
 
-```shell script
+```
 ant
 java -cp ./out/production/Lexer compiler.Main < TestInput.txt
 ```
@@ -172,7 +172,7 @@ java -cp ./out/production/Lexer compiler.Main < TestInput.txt
 I've included a sample test file, the expected result after running the java
 code should be
 
-```shell script
+```
 (Tok: 10 lin= 1,1 str = "prog")
 (Tok: 11 lin= 1,6 str = "main")
 (Tok: 33 lin= 1,11 str = "{")
@@ -221,13 +221,13 @@ code should be
 To print every transition performed in the DFA, pass the cli option of `-verbose`,
 like so
 
-```shell script
+```
 java -cp ./out/production/Lexer compiler.Main -verbose < TestInput.txt 
 ```
 
 The command outputs some informative transitions, helps with debugging grammar :)
 
-```shell script
+```
 START           = 'p' => IDENTIFIER     
 IDENTIFIER      = 'r' => IDENTIFIER     
 IDENTIFIER      = 'o' => IDENTIFIER     
