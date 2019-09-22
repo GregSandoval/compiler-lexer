@@ -14,13 +14,12 @@ to modeling the graph, then modeling a lexer, which uses the graph. The lexer
 depends on the graph, but the graph does not know the lexer exists. Similarly, 
 the lexer doesn't know about the regular language, rules can be added arbitrarily!
 
-### Team
-Gregory A. Sandoval
- 
 A simple lexer for the A5 Programming language. The goal of the project is to
 create a __simple__ and __readable__ lexer. 
 
-
+### Team
+Gregory A. Sandoval
+ 
 ## The Graph
 There is no 'Graph' class, rather a node holds a reference to a list of
 other nodes, making edges. Each of these 'edges' has a corresponding predicate 
