@@ -1,20 +1,6 @@
-prog main { print( "ASCII:", " A= ", 65, " Z= ", 90 ); }
-
-prog main { // Find the circumference of a circle.
-    var pi = 3.14;
-    print( "Input radius> " );
-    var rx = input ( float );
-    var circum = 2 * pi * rx;
-    print( "Circumf= ", circum );
-}
-
 prog main { // Find the hypotenuse of a right triangle.
     print( "Input legs> " );
     var a = input( int );
     var b = input( int );
     print( "Hypotenuse= ", ( a * a + b * b ) ^ 0.5 );
 }
-
-// This should be ignored
-proga main print print print
-

@@ -1,3 +1,13 @@
+# Introduction 
+The objective of this assignment is to write a lexer for the A5 language lexicon: 
+its tokens (i.e., legal “words”). The lexer transforms an A5 high-level program 
+sequence of characters into a list of tokens for that program (in a special format).
+ For convenience, this lexer will take input from standard-input (stdin) and send 
+ output to standard-output (stdout). 
+ 
+# Team
+Gregory A. Sandoval
+ 
 # A5 Programming Language Lexer
 A simple lexer for the A5 Programming language. The goal of the project is to
 create a __simple__ and __readable__ lexer. 
@@ -140,6 +150,7 @@ excuse the use of a regular expression for edges, including every edge would be 
 horrible mess. 
 
 ![image](./LexerDFADiagram.png)
+
 ## Dependencies
 ```shell script
 brew install java
@@ -156,3 +167,61 @@ to the lexer. The lexer outputs the results to standard out in `.alex` format.
 ant
 java -cp ./out/production/Lexer compiler.Main < TestInput.txt
 ```
+
+I've included a sample test file, the expected result after running the java
+code should be
+
+```shell script
+(Tok: 10 lin= 1,1 str = "prog")
+(Tok: 11 lin= 1,6 str = "main")
+(Tok: 33 lin= 1,11 str = "{")
+(Tok: 23 lin= 2,5 str = "print")
+(Tok: 37 lin= 2,10 str = "(")
+(Tok: 5 lin= 2,12 str = "Input legs> ")
+(Tok: 38 lin= 2,27 str = ")")
+(Tok: 7 lin= 2,28 str = ";")
+(Tok: 2 lin= 3,5 str = "var")
+(Tok: 2 lin= 3,9 str = "a")
+(Tok: 45 lin= 3,11 str = "=")
+(Tok: 22 lin= 3,13 str = "input")
+(Tok: 37 lin= 3,18 str = "(")
+(Tok: 16 lin= 3,20 str = "int")
+(Tok: 38 lin= 3,24 str = ")")
+(Tok: 7 lin= 3,25 str = ";")
+(Tok: 2 lin= 4,5 str = "var")
+(Tok: 2 lin= 4,9 str = "b")
+(Tok: 45 lin= 4,11 str = "=")
+(Tok: 22 lin= 4,13 str = "input")
+(Tok: 37 lin= 4,18 str = "(")
+(Tok: 16 lin= 4,20 str = "int")
+(Tok: 38 lin= 4,24 str = ")")
+(Tok: 7 lin= 4,25 str = ";")
+(Tok: 23 lin= 5,5 str = "print")
+(Tok: 37 lin= 5,10 str = "(")
+(Tok: 5 lin= 5,12 str = "Hypotenuse= ")
+(Tok: 6 lin= 5,26 str = ",")
+(Tok: 37 lin= 5,28 str = "(")
+(Tok: 2 lin= 5,30 str = "a")
+(Tok: 41 lin= 5,32 str = "*")
+(Tok: 2 lin= 5,34 str = "a")
+(Tok: 47 lin= 5,36 str = "+")
+(Tok: 2 lin= 5,38 str = "b")
+(Tok: 41 lin= 5,40 str = "*")
+(Tok: 2 lin= 5,42 str = "b")
+(Tok: 38 lin= 5,44 str = ")")
+(Tok: 42 lin= 5,46 str = "^")
+(Tok: 4 lin= 5,48 str = "0.5" flo= 0.5)
+(Tok: 38 lin= 5,52 str = ")")
+(Tok: 7 lin= 5,53 str = ";")
+(Tok: 34 lin= 6,1 str = "}")
+(Tok: 0 lin= 6,2 str = "")
+```
+
+## Features
+- Ability to log every transition in the DFA.
+- Tracks line number and position.
+- On error, logs problem line with bad character highlighted
+- Extendable, should work with any regular language.
+- Declarative, just build the states, and add the corresponding tokens, done!
+- Easy to debug DFA, turn on the transition logger and just worry about transitions!
+- Hides all character manipulations from the client.
