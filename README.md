@@ -5,7 +5,7 @@ Gregory A. Sandoval
 
 ## Introduction 
 The objective of this assignment is to write a lexer for the A5 language
-lexicon: its tokens (i.e., legal ``words''). The lexer transforms an A5
+lexicon: its tokens (i.e., legal ''words''). The lexer transforms an A5
 high-level program sequence of characters into a list of tokens for that
 program (in a special format). For convenience, this lexer will take
 input from standard-input (stdin) and send output to standard-output
