@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
 import static compiler.lexer.NonFinalState.END_OF_TERMINAL;
 import static compiler.utils.StringUtils.escape;
 
+/**
+ * Entry point for lexer.
+ */
 public class Main {
 
   public static void main(String[] args) {

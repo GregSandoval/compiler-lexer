@@ -5,6 +5,11 @@ import compiler.lexer.token.Token;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Represents a final state within the DFA.
+ * This class takes constructor for a Token,
+ * creating it when getToken is called
+ */
 public class FinalState extends LexicalNode {
   private Function<String, Token> constructorWithString;
   private Supplier<Token> constructorNoArgs;

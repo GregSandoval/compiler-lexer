@@ -1,5 +1,8 @@
 package compiler.utils;
 
+/**
+ * Random string utils.
+ */
 public class StringUtils {
 
   public static String escape(Character character) {

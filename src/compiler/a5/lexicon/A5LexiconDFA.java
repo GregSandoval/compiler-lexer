@@ -7,6 +7,9 @@ import compiler.lexer.token.*;
 
 import static compiler.a5.lexicon.A5EdgePredicates.*;
 
+/**
+ * This file creates the DFA nodes and edges.
+ */
 public class A5LexiconDFA {
   // DFA Grammar
   public static final LexicalNode START = new NonFinalState("START");

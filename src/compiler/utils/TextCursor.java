@@ -5,6 +5,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * A java compliant iterator over the given string.
+ * This iterator also knows which line/position number
+ * it's on. Can also reverse.
+ */
 public class TextCursor implements Iterator<Character>, Iterable<Character> {
   private final char[] text;
   private final int[] lineNumbers;

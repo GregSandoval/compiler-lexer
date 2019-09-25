@@ -1,5 +1,9 @@
 package compiler.lexer.token;
 
+/**
+ * The base class for all token classes.
+ * All tokens should extend this class.
+ */
 public abstract class Token {
   private final String value;
   private final int ID;

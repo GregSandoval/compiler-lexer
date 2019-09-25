@@ -8,6 +8,16 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+/**
+ * Represents a node within the graph.
+ * Uses 'curiously recurring template pattern' to return
+ * subclass instances from the base class methods.
+ *
+ * This node holds all outgoing edges. Each edge has a corresponding
+ * predicate function, which determines if an edge should be 'walked'
+ *
+ * @param <T> A subclass of node
+ */
 public abstract class Node<T extends Node<T>> {
   private final Supplier<Optional<T>> onError;
   private final List<Function<Character, T>> transitions = new ArrayList<>();

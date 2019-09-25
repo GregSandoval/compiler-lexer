@@ -2,6 +2,11 @@ package compiler.a5.lexicon;
 
 import java.util.function.Predicate;
 
+/**
+ * A grouping of commonly used functions for detecting character classes.
+ * Used to define the conditions for when the lexer should transition
+ * to a different state.
+ */
 public final class A5EdgePredicates {
   // CHARACTER SETS
   public static Predicate<Character> A_LOWER_CASE_LETTER = symbol -> symbol >= 'a' && symbol <= 'z';
