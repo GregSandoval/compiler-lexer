@@ -104,7 +104,7 @@ output.
 
 The grammar corresponds to the DFA depicted in Figure 1, like in most texts,
 consider any missing transitions to exist and lead to a shared error
-state. The diagram doesn't include non-terminals, since it would be far
+state. The diagram doesn't include terminals, since it would be far
 too large to display! Please excuse the use of a regular expression for
 edges, including every edge would be a horrible mess.
 
@@ -179,6 +179,9 @@ edges, including every edge would be a horrible mess.
 ![image](LexerDFADiagram.png)
 
 ## Dependencies
+Ant is an optional dependency, I've included a prebuilt jar file, so you
+can skip that step.
+
 ```shell script
 brew install java
 brew install ant
@@ -186,14 +189,25 @@ brew install ant
 
 
 ## How to run
-In the root directory, run the following commands. The first command
-builds the java code. The second passes a text file to the lexer. The
-lexer outputs the results to standard out, in `.alex` format.
+In the root directory, run the following commands. 
+
+
+### Building it from source
+The first command builds the java code. The second passes a text 
+file to the lexer. The lexer outputs the results to standard out, 
+in `.alex` format.
 
 ```
 ant
 java -cp ./out/production/Lexer compiler.Main < TestInput.txt
 ```
+
+
+### Running the prebuilt jar
+```
+java -jar Lexer.jar < TestInput.txt
+```
+
 
 I've included a sample test file, the expected result after running the
 java code should be as follows.
@@ -249,6 +263,11 @@ like so
 
 ```
 java -cp ./out/production/Lexer compiler.Main -verbose < TestInput.txt 
+```
+
+Using the jar:
+```
+java -jar Lexer.jar -verbose < TestInput.txt 
 ```
 
 The command outputs some informative transitions, helps with debugging grammar :)
