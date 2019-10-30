@@ -1,10 +1,12 @@
 package compiler.lexer.token;
 
+import compiler.parser.AbstractGrammarNode;
+
 /**
  * The base class for all token classes.
  * All tokens should extend this class.
  */
-public abstract class Token {
+public abstract class Token extends AbstractGrammarNode {
   private final String value;
   private final int ID;
   private int lineNumber;

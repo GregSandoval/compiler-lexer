@@ -1,7 +1,5 @@
 package compiler.utils;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -17,7 +15,7 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
 
   private int cursor = -1;
 
-  public TextCursor(@NotNull String text) {
+  public TextCursor(String text) {
     this.text = (text + "\n").toCharArray();
     this.lineNumbers = new int[this.text.length];
     this.linePositions = new int[this.text.length];
@@ -84,7 +82,6 @@ public class TextCursor implements Iterator<Character>, Iterable<Character> {
     return lineBuilder.toString();
   }
 
-  @NotNull
   @Override
   public Iterator<Character> iterator() {
     return this;

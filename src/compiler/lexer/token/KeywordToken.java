@@ -1,42 +1,103 @@
 package compiler.lexer.token;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public final class KeywordToken extends Token {
-  private static final Map<String, Integer> keywords = new HashMap<>();
-
-  static {
-    keywords.put("prog", 10);
-    keywords.put("main", 11);
-    keywords.put("fcn", 12);
-    keywords.put("class", 13);
-    keywords.put("float", 15);
-    keywords.put("int", 16);
-    keywords.put("string", 17);
-    keywords.put("if", 18);
-    keywords.put("elseif", 19);
-    keywords.put("else", 20);
-    keywords.put("while", 21);
-    keywords.put("input", 22);
-    keywords.put("print", 23);
-    keywords.put("new", 24);
-    keywords.put("return", 25);
-    keywords.put("var", 2);
-  }
-
+public class KeywordToken extends Token {
   private KeywordToken(String str, int UUID) {
     super(str, UUID);
   }
 
-  public static Token get(Token identifier) {
-    final var tokenValue = identifier.getValue();
-    if (keywords.containsKey(tokenValue)) {
-      final var keyword = new KeywordToken(tokenValue, keywords.get(tokenValue));
-      keyword.setLineNumber(identifier.getLineNumber());
-      keyword.setLinePosition(identifier.getLinePosition());
-      return keyword;
+  public static class ProgramKeywordToken extends KeywordToken {
+    public ProgramKeywordToken() {
+      super("prog", 10);
     }
-    return identifier;
+  }
+
+  public static class MainKeywordToken extends KeywordToken {
+    public MainKeywordToken() {
+      super("main", 11);
+    }
+  }
+
+  public static class FunctionKeywordToken extends KeywordToken {
+    public FunctionKeywordToken() {
+      super("fcn", 12);
+    }
+  }
+
+  public static class ClassKeywordToken extends KeywordToken {
+    public ClassKeywordToken() {
+      super("class", 13);
+    }
+  }
+
+  public static class FloatKeywordToken extends KeywordToken {
+    public FloatKeywordToken() {
+      super("float", 13);
+    }
+  }
+
+  public static class IntegerKeywordToken extends KeywordToken {
+    public IntegerKeywordToken() {
+      super("int", 16);
+    }
+  }
+
+  public static class StringKeywordToken extends KeywordToken {
+    public StringKeywordToken() {
+      super("string", 17);
+    }
+  }
+
+  public static class IfKeywordToken extends KeywordToken {
+    public IfKeywordToken() {
+      super("if", 18);
+    }
+  }
+
+  public static class ElseIfKeywordToken extends KeywordToken {
+    public ElseIfKeywordToken() {
+      super("elseif", 19);
+    }
+  }
+
+  public static class ElseKeywordToken extends KeywordToken {
+    public ElseKeywordToken() {
+      super("else", 20);
+    }
+  }
+
+  public static class WhileKeywordToken extends KeywordToken {
+    public WhileKeywordToken() {
+      super("while", 21);
+    }
+  }
+
+  public static class InputKeywordToken extends KeywordToken {
+    public InputKeywordToken() {
+      super("input", 22);
+    }
+  }
+
+  public static class PrintKeywordToken extends KeywordToken {
+    public PrintKeywordToken() {
+      super("print", 23);
+    }
+  }
+
+  public static class NewKeywordToken extends KeywordToken {
+    public NewKeywordToken() {
+      super("new", 24);
+    }
+  }
+
+  public static class ReturnKeywordToken extends KeywordToken {
+    public ReturnKeywordToken() {
+      super("return", 25);
+    }
+  }
+
+  public static class VarKeywordToken extends KeywordToken {
+    public VarKeywordToken() {
+      super("var", 2);
+    }
   }
 }
