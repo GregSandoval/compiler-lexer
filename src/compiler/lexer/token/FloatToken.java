@@ -20,5 +20,4 @@ public final class FloatToken extends TypedToken<Float> {
   public String toStringExtra() {
     return " flo= " + this.value;
   }
-
 }

@@ -1,9 +1,6 @@
 package compiler.lexer;
 
-import compiler.lexer.token.CommentToken;
-import compiler.lexer.token.KeywordTokenRecognizer;
-import compiler.lexer.token.Token;
-import compiler.lexer.token.WhitespaceToken;
+import compiler.lexer.token.*;
 import compiler.utils.TextCursor;
 import compiler.utils.TriConsumer;
 
@@ -65,7 +62,7 @@ public class Lexer {
     }
 
     // Add eof :)
-    var eof = new Token("", 0){};
+    var eof = new EOFToken();
     eof.setLinePosition(cursor.getCursorLinePosition());
     eof.setLineNumber(cursor.getCursorLineNumber());
     tokens.add(eof);

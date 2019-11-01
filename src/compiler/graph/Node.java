@@ -12,7 +12,7 @@ import java.util.function.Supplier;
  * Represents a node within the graph.
  * Uses 'curiously recurring template pattern' to return
  * subclass instances from the base class methods.
- *
+ * <p>
  * This node holds all outgoing edges. Each edge has a corresponding
  * predicate function, which determines if an edge should be 'walked'
  *
