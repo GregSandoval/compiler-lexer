@@ -13,7 +13,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -24,7 +24,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -35,7 +35,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -46,7 +46,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -57,7 +57,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -68,7 +68,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -79,7 +79,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -90,7 +90,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -101,7 +101,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -112,7 +112,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -123,7 +123,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -134,7 +134,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -145,7 +145,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -156,7 +156,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -167,7 +167,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }
@@ -178,7 +178,7 @@ public abstract class KeywordToken extends Token {
     }
 
     @Override
-    public void accept(TokenVisitor visitor){
+    public void accept(TokenVisitor visitor) {
       visitor.visit(this);
     }
   }

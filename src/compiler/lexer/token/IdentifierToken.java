@@ -20,6 +20,6 @@ public class IdentifierToken extends TypedToken<String> {
 
   @Override
   public void accept(TokenVisitor visitor) {
-visitor.visit(this);
+    visitor.visit(this);
   }
 }

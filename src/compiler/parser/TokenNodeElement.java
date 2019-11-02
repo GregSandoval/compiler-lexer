@@ -2,5 +2,5 @@ package compiler.parser;
 
 
 public interface TokenNodeElement {
-  public void accept(TokenVisitor visitor);
+  void accept(TokenVisitor visitor);
 }

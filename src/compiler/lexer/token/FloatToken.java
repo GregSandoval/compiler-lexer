@@ -25,6 +25,6 @@ public final class FloatToken extends TypedToken<Float> {
 
   @Override
   public void accept(TokenVisitor visitor) {
-visitor.visit(this);
+    visitor.visit(this);
   }
 }
