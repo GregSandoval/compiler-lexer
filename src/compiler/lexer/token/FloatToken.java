@@ -1,5 +1,7 @@
 package compiler.lexer.token;
 
+import compiler.parser.TokenVisitor;
+
 public final class FloatToken extends TypedToken<Float> {
   private static final FloatToken sentinel = new FloatToken("0");
 
@@ -19,5 +21,10 @@ public final class FloatToken extends TypedToken<Float> {
   @Override
   public String toStringExtra() {
     return " flo= " + this.value;
+  }
+
+  @Override
+  public void accept(TokenVisitor visitor) {
+visitor.visit(this);
   }
 }
