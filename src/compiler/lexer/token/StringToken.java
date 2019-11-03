@@ -1,5 +1,7 @@
 package compiler.lexer.token;
 
+import compiler.parser.TokenVisitor;
+
 public final class StringToken extends Token {
   private static final StringToken sentinel = new StringToken("");
 
@@ -9,5 +11,10 @@ public final class StringToken extends Token {
 
   public static StringToken getSentinel() {
     return sentinel;
+  }
+
+  @Override
+  public void accept(TokenVisitor visitor) {
+    visitor.visit(this);
   }
 }

@@ -1,20 +1,21 @@
 package compiler.lexer.token;
 
 import compiler.parser.AbstractGrammarNode;
+import compiler.parser.TokenNodeElement;
 
 /**
  * The base class for all token classes.
  * All tokens should extend this class.
  */
-public abstract class Token extends AbstractGrammarNode {
+public abstract class Token extends AbstractGrammarNode implements TokenNodeElement {
   private final String value;
-  private final int ID;
+  private final int tokenID;
   private int lineNumber;
   private int linePosition;
 
-  protected Token(String value, int UUID) {
+  protected Token(String value, int tokenID) {
     this.value = value;
-    this.ID = UUID;
+    this.tokenID = tokenID;
   }
 
   public int getLineNumber() {
@@ -35,7 +36,7 @@ public abstract class Token extends AbstractGrammarNode {
 
   public final String toString() {
     final var format = "(Tok: %s lin= %s,%s str = \"%s\"%s)";
-    return String.format(format, ID, lineNumber, linePosition, value, toStringExtra());
+    return String.format(format, tokenID, lineNumber, linePosition, value, toStringExtra());
   }
 
   public String getValue() {

@@ -1,5 +1,7 @@
 package compiler.lexer.token;
 
+import compiler.parser.TokenVisitor;
+
 public final class IntegerToken extends TypedToken<Integer> {
   private static final IntegerToken sentinel = new IntegerToken("0");
 
@@ -21,4 +23,8 @@ public final class IntegerToken extends TypedToken<Integer> {
     return " int= " + this.value + ")";
   }
 
+  @Override
+  public void accept(TokenVisitor visitor) {
+    visitor.visit(this);
+  }
 }

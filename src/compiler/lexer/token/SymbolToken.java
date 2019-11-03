@@ -1,6 +1,8 @@
 package compiler.lexer.token;
 
-public class SymbolToken extends Token {
+import compiler.parser.TokenVisitor;
+
+public abstract class SymbolToken extends Token {
 
   private SymbolToken(String str, int UUID) {
     super(str, UUID);
@@ -10,11 +12,21 @@ public class SymbolToken extends Token {
     public Comma() {
       super(",", 6);
     }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
+    }
   }
 
   public static class SemiColon extends SymbolToken {
     public SemiColon() {
       super(";", 7);
+    }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
     }
   }
 
@@ -22,11 +34,21 @@ public class SymbolToken extends Token {
     public LeftBrace() {
       super("{", 33);
     }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
+    }
   }
 
   public static class RightBrace extends SymbolToken {
     public RightBrace() {
       super("}", 34);
+    }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
     }
   }
 
@@ -34,11 +56,21 @@ public class SymbolToken extends Token {
     public LeftBracket() {
       super("[", 35);
     }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
+    }
   }
 
   public static class RightBracket extends SymbolToken {
     public RightBracket() {
       super("]", 36);
+    }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
     }
   }
 
@@ -46,11 +78,21 @@ public class SymbolToken extends Token {
     public LeftParen() {
       super("(", 37);
     }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
+    }
   }
 
   public static class RightParen extends SymbolToken {
     public RightParen() {
       super(")", 38);
+    }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
     }
   }
 
@@ -58,11 +100,21 @@ public class SymbolToken extends Token {
     public Caret() {
       super("^", 42);
     }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
+    }
   }
 
   public static class Colon extends SymbolToken {
     public Colon() {
       super(":", 43);
+    }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
     }
   }
 
@@ -70,11 +122,21 @@ public class SymbolToken extends Token {
     public Period() {
       super(".", 44);
     }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
+    }
   }
 
   public static class ForwardSlash extends SymbolToken {
     public ForwardSlash() {
       super("/", 48);
+    }
+
+    @Override
+    public void accept(TokenVisitor visitor) {
+      visitor.visit(this);
     }
   }
 
