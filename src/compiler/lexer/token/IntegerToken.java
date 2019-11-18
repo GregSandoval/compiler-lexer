@@ -20,7 +20,7 @@ public final class IntegerToken extends TypedToken<Integer> {
 
   @Override
   public String toStringExtra() {
-    return " int= " + this.value + ")";
+    return " int= " + this.value;
   }
 
   @Override
